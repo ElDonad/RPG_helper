@@ -7,6 +7,7 @@
 #include <QWidget>
 #include <savetools.h>
 #include <combat.h>
+#include <attaque.h>
 
 namespace Ui {
 class MainWindow;

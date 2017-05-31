@@ -1,8 +1,6 @@
 #ifndef ATTAQUE_H
 #define ATTAQUE_H
 
-#include <personnage.h>
-#include <heros.h>
 #include <QVector>
 
 
@@ -10,10 +8,25 @@ class Attaque
 {
 public:
     Attaque();
-    void makeAttaque(Personnage &cible);
+    Attaque(QVector <QString> saveVector);
+    Attaque(int degats,
+            QString nom,
+            int heal,
+            int mpCost,
+            int persistence,
+            double degatsModifier,
+            double armureModifier,
+            double mpCostModifier,
+            double absoModifier,
+            int dodgeHitModifier,
+            int critHitModifier,
+            double critAttaqueModifier,
+            QVector <int> effectsModifier,
+            QVector <int> permanentEffectsModifier);
+    
 
 private :
-    int m_degats;
+	int m_degats;
 
     int m_heal;
 
@@ -22,20 +35,19 @@ private :
     QString m_nom;
 
     //augmentation/baisse des dégâts (buffer)
-    int m_degatsModifier;
-    int m_mpCostBuffer;
+    double m_degatsModifier;
+    double m_mpCostModifier;
 
 
-    int m_armureModifier; //influence le defense state
-    int m_absoModifier;
+    double m_armureModifier;//influence le defense state
+    double m_absoModifier;
 
 
     //augmentation/baisse du dodge/critique
-    int m_dodgeBuffer;
-    int m_criticalBuffer;
+    int m_dodgeModifier;
+    int m_criticalModifier;
 
-    float m_attaqueCritBuffer;
-    float m_attaqueDodgeBuffer;
+    double m_attaqueCritModifier;
 
     QVector <int> m_effectsModifier;
     int m_charge;
@@ -43,12 +55,30 @@ private :
 
 
 public :
-    void attaque (int de, Personnage &attaquant, Personnage &defenseur);
     QString returnName ();
     //void returnPermanentEffect (int effects []); quoi ??
     int returnEffectModifier (int effect);
 
+    //acesseurs
+    int getDegats();//fait
+    int getHeal();//fait
+    int getMpCost();//fait
+    int getPersistence();//fait
+    QString getName();//fait
+    double getDegatsModifier(); //nombre à multiplier, fait
+    double getMpCostModifier();//fait
+    double getArmureModifier();//fait
+    double getAbsoModifier();//fait
+    int getDodgeModifier();//fait
+    int getCriticalModifier();//fait
+    double getAttaqueCritModifier();//fait
+    QVector <int> getEffectsModifier();//fait
+    int getCharge();//fait
+    QVector <int> getPermanentEffectsModifier();//fait
 
+    //utilitaires supplémentaires
+    int getTotalPersistence();//fait
+    QVector <QString> returnSaveVector();
 
 };
 

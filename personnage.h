@@ -6,8 +6,10 @@
 #include <QProgressBar>
 #include <QTextStream>
 #include <QFile>
+#include <iostream>
 
 #include <savetools.h>
+#include <attaque.h>
 
 
 class Personnage : public QObject
@@ -15,7 +17,8 @@ class Personnage : public QObject
     Q_OBJECT
 public:
     explicit Personnage(QObject *parent = 0); //fait
-    explicit Personnage(int vie, int mp, QString nom, QString description, int level, QObject *parent = 0); //fait
+    explicit Personnage(int vie, int vieMax, int mp, int mpMax, QString nom,
+                        int level, float defense, float critique, float absorption, int critHit, int dodgeHit, QVector<Attaque> attaques, QObject *parent); //fait
     explicit Personnage(QString path, QObject *parent = 0);
 
     void setVie(int newVie); //fait
@@ -51,8 +54,8 @@ public:
     void setDodge(int newDodge);//fait
     int getDodge();//fait
 
-    void setDodgeBuffer(int newDodgeBuffer);//fait
-    int getDodgeBuffer();//fait
+    void setDodgeHitBuffer(int newDodgeBuffer);//fait
+    int getDodgeHitBuffer();//fait
 
     void setDefenseBuffer(int newDefenseBuffer);//fait
     int getDefenseBuffer();//fait
@@ -60,10 +63,18 @@ public:
     void setDefenseStateBuffer(int newDefensetateBuffer);//fait
     int getDefenseStateBuffer();//fait
 
+    void setCritiqueHit(int newCriticalHit);//fait
+    int getCritiqueHit();//fait
+
+    void setCritiqueHitBuffer(int newCritiqueHitBuffer);//fait
+    int getCritiqueHitBuffer();//fait
+
+    int getTotalCriticalHit();
+    int getTotalDodgeHit();
+
 
     //Partie spécifique combat (générale à tous les mobs)
     int getTotalCritique();//fait
-    int getTotalDodge();//fait
     int getTotalDefense();//fait
     int getTotalVie();//fait
     int getTotalMp();//fait
@@ -125,14 +136,18 @@ private :
     //QString m_description;
 
     //combat stats
+    int degatsBuffer;
     int m_defense;
     int m_defenseBuffer;
-    int m_critique;
-    int m_critiqueBuffer;
-    int m_dodge;
-    int m_dodgeBuffer;
-    int m_absorption; //pourcentage
-    int m_absoptionBuffer;
+    int m_critiqueHit;
+    int m_dodgeHit;
+    int m_dodgeHitBuffer;
+    int m_critHitBuffer;
+    double m_critique; //Le critique supplémentaire (ex : 1.20 pour +20%) est utilisé lors des attaques. Ne doit pas être changé normalement
+    double m_critiqueBuffer; //(ex : 0.10) pour un bonus de 10%
+    //le dodge ANNULE TOUT !!! Penser à modifier ça
+    double m_absorption; //pourcentage
+    double m_absoptionBuffer;
 
 
     //effect stats
@@ -152,6 +167,7 @@ private :
     bool m_isInDefenseState;
     //int m_defenseStateBuffer;
     bool m_isDeath;
+    QVector <Attaque> m_attaques;
 
 };
 

@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -9,7 +10,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     m_gold = 5000;
 
-
+    Personnage *jeanMarc = new Personnage();
     QString gold = QString::number(m_gold);
     QString textGold = "Gold total : " + gold;
 
