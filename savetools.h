@@ -18,5 +18,6 @@ void saveFile(QVector <QString> aSauver, QString path);
 QVector <QString> getFile (QString path);
 
 bool toBool(QString newBool);
+QString convertNormalPathIntoProtected(QString path);
 
 #endif // SAVETOOLS_H

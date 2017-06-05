@@ -49,21 +49,11 @@
    <attribute name="verticalHeaderVisible">
     <bool>false</bool>
    </attribute>
-   <row>
-    <property name="text">
-     <string>Nouvelle ligne</string>
-    </property>
-   </row>
    <column>
     <property name="text">
      <string>test</string>
     </property>
    </column>
-   <item row="0" column="0">
-    <property name="text">
-     <string>truc</string>
-    </property>
-   </item>
   </widget>
   <widget class="QLabel" name="label">
    <property name="geometry">
@@ -91,10 +81,10 @@
     <number>100</number>
    </property>
    <property name="singleStep">
-    <number>5</number>
+    <number>1</number>
    </property>
    <property name="value">
-    <number>1</number>
+    <number>0</number>
    </property>
   </widget>
   <widget class="QScrollArea" name="ScrollPersos">
@@ -623,6 +613,52 @@
      </widget>
     </widget>
    </widget>
+  </widget>
+  <widget class="QPushButton" name="copieButton">
+   <property name="geometry">
+    <rect>
+     <x>480</x>
+     <y>60</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Copier</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="deleteButton">
+   <property name="geometry">
+    <rect>
+     <x>480</x>
+     <y>90</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Supprimer</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton">
+   <property name="geometry">
+    <rect>
+     <x>230</x>
+     <y>580</y>
+     <width>331</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>20</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="text">
+    <string>Fin du tour</string>
+   </property>
   </widget>
  </widget>
  <resources/>

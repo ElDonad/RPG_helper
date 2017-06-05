@@ -104,3 +104,20 @@ bool toBool(QString newBool)
         return false;
     }
 }
+
+QString convertNormalPathIntoProtected(QString path)
+{
+    //QVector <int> slashs;
+    int loop = 0;
+    while (loop < path)
+    {
+        if (path[loop] == '/')
+        {
+            path.insert(loop, '/');
+
+        }
+        loop++;
+    }
+    return path;
+}
+

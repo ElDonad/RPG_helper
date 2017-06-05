@@ -22,11 +22,14 @@ public:
             int critHitModifier,
             double critAttaqueModifier,
             QVector <int> effectsModifier,
-            QVector <int> permanentEffectsModifier);
+            QVector <int> permanentEffectsModifier,
+            int attaqueId);
     
 
 private :
-	int m_degats;
+	int m_attaqueId;
+
+    int m_degats;
 
     int m_heal;
 
@@ -79,6 +82,8 @@ public :
     //utilitaires supplémentaires
     int getTotalPersistence();//fait
     QVector <QString> returnSaveVector();
+
+    int getId();
 
 };
 

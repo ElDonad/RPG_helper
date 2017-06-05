@@ -8,6 +8,8 @@
 #include <savetools.h>
 #include <combat.h>
 #include <attaque.h>
+#include <QFileDialog>
+#include <statsmodifier.h>
 
 namespace Ui {
 class MainWindow;
@@ -20,10 +22,10 @@ class MainWindow : public QMainWindow
 
 public:
     explicit MainWindow(QWidget *parent = 0);
-    explicit MainWindow(QString path,QWidget *parent = 0);
     ~MainWindow();
     void setWidgetUi(int idPerso, int widget, QString newValue);
     void saveMain(QString path);
+    void updateGui();
 
 private:
     Ui::MainWindow *ui;
@@ -33,7 +35,7 @@ private:
 
 private :
     //groupes de widget par perso
-    Heros Bourrin;
+    Heros m_bourrin;
     Heros Mage;
 
 
@@ -50,6 +52,9 @@ private slots:
     void on_pushButton_2_clicked();
     void on_save_clicked();
     void on_pushValidateGold_clicked();
+    void onClose();
+    void on_statsButton_2_clicked();
+    void on_combatButton_clicked();
 };
 
 #endif // MAINWINDOW_H

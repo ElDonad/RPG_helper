@@ -7,6 +7,7 @@
 #include <QTextStream>
 #include <QFile>
 #include <iostream>
+#include <stdlib.h>
 
 #include <savetools.h>
 #include <attaque.h>
@@ -17,9 +18,16 @@ class Personnage : public QObject
     Q_OBJECT
 public:
     explicit Personnage(QObject *parent = 0); //fait
-    explicit Personnage(int vie, int vieMax, int mp, int mpMax, QString nom,
-                        int level, float defense, float critique, float absorption, int critHit, int dodgeHit, QVector<Attaque> attaques, QObject *parent); //fait
-    explicit Personnage(QString path, QObject *parent = 0);
+    explicit Personnage(int vie, int vieMax, int mp, int mpMax, QString &nom,
+                        int level, double defense, double critique, double absorption, int critHit, int dodgeHit, QVector<Attaque>& attaques, QObject *parent); //fait
+    explicit Personnage(QString path, QObject *parent = 0);//fait
+
+    void rewrite(int vie, int vieMax, int mp, int mpMax, QString &nom,
+                 int level, double defense, double critique, double absorption, int critHit, int dodgeHit, QVector<Attaque>& attaques);
+    void rewrite(QString path);
+
+
+    void combat(Personnage &cible, Attaque *bonneAttaque);//fait
 
     void setVie(int newVie); //fait
     int getVie(); //fait
@@ -27,11 +35,11 @@ public:
     void setMp(int newMp); //fait
     int getMp(); //fait
 
-    void setVieBuffer(int newVieBuffer); //fait
-    int getVieBuffer(); //fait
+    void setVieBuffer(double newVieBuffer); //fait
+    double getVieBuffer(); //fait
 
-    void setMpBuffer(int newMpBuffer);//fait
-    int getMpBuffer(); //fait
+    void setMpBuffer(double newMpBuffer);//fait
+    double getMpBuffer(); //fait
 
     void setVieMax(int newVieMax); //fait
     int getVieMax(); //fait
@@ -42,26 +50,26 @@ public:
     void setName(QString newName); //fait
     QString getName(); //fait
 
-    void setDefense(int newDefense);//fait
-    int getDefense();//fait
+    void setDefense(double newDefense);//fait
+    double getDefense();//fait
 
-    void setCritique(int newCritique);//fait
-    int getCritique();//fait
+    void setCritique(double newCritique);//fait
+    double getCritique();//fait
 
-    void setCritiqueBuffer(int newCritiqueBuffer);//fait
-    int getCritiqueBuffer();//fait
+    void setCritiqueBuffer(double newCritiqueBuffer);//fait
+    double getCritiqueBuffer();//fait
 
     void setDodge(int newDodge);//fait
     int getDodge();//fait
 
-    void setDodgeHitBuffer(int newDodgeBuffer);//fait
-    int getDodgeHitBuffer();//fait
+    void setDodgeHitBuffer(double newDodgeBuffer);//fait
+    double getDodgeHitBuffer();//fait
 
-    void setDefenseBuffer(int newDefenseBuffer);//fait
-    int getDefenseBuffer();//fait
+    void setDefenseBuffer(double newDefenseBuffer);//fait
+    double getDefenseBuffer();//fait
 
-    void setDefenseStateBuffer(int newDefensetateBuffer);//fait
-    int getDefenseStateBuffer();//fait
+    void setDefenseStateBuffer(double newDefensetateBuffer);//fait
+    double getDefenseStateBuffer();//fait
 
     void setCritiqueHit(int newCriticalHit);//fait
     int getCritiqueHit();//fait
@@ -72,13 +80,24 @@ public:
     int getTotalCriticalHit();
     int getTotalDodgeHit();
 
+    double getDegats();
+    void setDegats();
+
+    double getHeal();
+    void setHeal();
+
+    void setAbso(double newAbso);
+    double getAbso();
+
+
+
 
     //Partie spécifique combat (générale à tous les mobs)
-    int getTotalCritique();//fait
-    int getTotalDefense();//fait
+    double getTotalCritique();//fait
+    double getTotalDefense();//fait
     int getTotalVie();//fait
     int getTotalMp();//fait
-    int getTotalAbso();
+    double getTotalAbso();
 
     void degat(int degatCount); //comprend la gestion de l'absorption et de la vie supplémentaire fait
     void levelUp(); //différentes augmentations de stats, défini à +20% pour l'instant, à redéfinir par la suite, fait
@@ -106,7 +125,9 @@ public:
 
     //pour les textes affichés
     QString returnVieSurVieMax();
-    int returnPurcentVie();
+    double returnPurcentVie();
+
+    Attaque returnAttaque(int attaqueId);
 
 
 private : bool* returnEffect(int effect); //fait
@@ -136,7 +157,10 @@ private :
     //QString m_description;
 
     //combat stats
-    int degatsBuffer;
+    double m_degats;//pour les sauts de level, en pourcentage
+    double m_heal;//même chose
+    
+    int m_degatsBuffer;
     int m_defense;
     int m_defenseBuffer;
     int m_critiqueHit;

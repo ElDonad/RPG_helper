@@ -83,17 +83,22 @@ Attaque::Attaque(QVector <QString> saveVector)
     int charge = saveVector[16].toInt();
     m_charge = charge;
 
-    int permanentEffect1 = saveVector[12].toInt();
+    int permanentEffect1 = saveVector[17].toInt();
     m_permanentEffectModifier[0] = permanentEffect1;
 
-    int permanentEffect2 = saveVector[13].toInt();
+    int permanentEffect2 = saveVector[18].toInt();
     m_permanentEffectModifier[1] = permanentEffect2;
 
-    int permanentEffect3 = saveVector[14].toInt();
+    int permanentEffect3 = saveVector[19].toInt();
     m_permanentEffectModifier[2] = permanentEffect3;
 
-    int permanentEffect4 = saveVector[15].toInt();
+    int permanentEffect4 = saveVector[20].toInt();
     m_permanentEffectModifier[3] = permanentEffect4;
+
+    int attaqueId = saveVector[21].toInt();
+    m_attaqueId = attaqueId;
+
+
 
 }
 
@@ -110,7 +115,8 @@ Attaque::Attaque(int degats,
                  int critHitModifier,
                  double critAttaqueModifier,
                  QVector<int> effectsModifier,
-                 QVector<int> permanentEffectsModifier)
+                 QVector<int> permanentEffectsModifier,
+                 int attaqueId)
 {
     m_degats = degats;
     m_heal = heal;
@@ -126,6 +132,7 @@ Attaque::Attaque(int degats,
     m_attaqueCritModifier = critAttaqueModifier;
     m_effectsModifier = effectsModifier;
     m_permanentEffectModifier = permanentEffectsModifier;
+    m_attaqueId = attaqueId;
 }
 
 int Attaque::returnEffectModifier(int effect)
@@ -214,5 +221,10 @@ int Attaque::getTotalPersistence()
 {
     int aRetourner = m_charge + m_persistence;
     return aRetourner;
-}//acesseurs
+}
+
+int Attaque::getId()
+{
+    return m_attaqueId;
+}
 
