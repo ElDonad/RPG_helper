@@ -11,6 +11,9 @@
 
 #include <savetools.h>
 #include <attaque.h>
+#include <slacsheffectattaquedial.h>
+
+#include <QDialog>
 
 
 class Personnage : public QObject
@@ -19,14 +22,17 @@ class Personnage : public QObject
 public:
     explicit Personnage(QObject *parent = 0); //fait
     explicit Personnage(int vie, int vieMax, int mp, int mpMax, QString &nom,
-                        int level, double defense, double critique, double absorption, int critHit, int dodgeHit, QVector<Attaque>& attaques, QObject *parent); //fait
-    explicit Personnage(QString path, QObject *parent = 0);//fait
+                        int level, double defense, double critique, double absorption, int critHit, int dodgeHit, QVector<Attaque*>& attaques, QObject *parent); //fait
+    explicit Personnage(QString path,  QVector<Attaque*> attaques, QObject *parent = 0);//fait
+    explicit Personnage(Personnage const& toCopy);
 
-    void rewrite(int vie, int vieMax, int mp, int mpMax, QString &nom,
-                 int level, double defense, double critique, double absorption, int critHit, int dodgeHit, QVector<Attaque>& attaques);
-    void rewrite(QString path);
+    void rewrite(int vie, int vieMax, int mp, int mpMax, QString nom,
+                 int level, double defense, double critique, double absorption, int critHit, int dodgeHit, QVector<Attaque *> &attaques);
+    void rewrite(QString path, QVector<Attaque*> attaques);
 
+    ~Personnage();
 
+    bool equal(Personnage const& b) const;
     void combat(Personnage &cible, Attaque *bonneAttaque);//fait
 
     void setVie(int newVie); //fait
@@ -89,6 +95,9 @@ public:
     void setAbso(double newAbso);
     double getAbso();
 
+    QVector<Attaque *> getAttaques();
+    void setAttaque (QVector <Attaque *> newAttaques);
+
 
 
 
@@ -147,6 +156,10 @@ public :
 
 private :
     //general stats
+    static int id;
+    int m_id;
+    int setId();
+
     int m_vie;
     int m_mp;
     int m_vieBuffer;
@@ -191,7 +204,7 @@ private :
     bool m_isInDefenseState;
     //int m_defenseStateBuffer;
     bool m_isDeath;
-    QVector <Attaque> m_attaques;
+    QVector <Attaque*> m_attaques;
 
 };
 

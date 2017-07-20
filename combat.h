@@ -10,6 +10,8 @@
 #include <QTableView>
 #include <QTableWidget>
 #include <QTableWidgetItem>
+#include <savetools.h>
+#include <operatorequal.h>
 
 
 namespace Ui {
@@ -31,14 +33,35 @@ private slots:
 
     void on_ennemyTable_cellDoubleClicked(int row, int column);
 
-    void setHerosAttaque(Heros* attaquant);
+    void on_bourrinAttaque_clicked();
+
+    void on_eraseAttaqueButton_clicked();
+
+    void on_copieButton_clicked();
+
+    void on_ennemyTable_doubleClicked(const QModelIndex &index);
+
+    void on_deleteButton_clicked();
+
+
+    void on_editButton_clicked();
 
 private:
     Ui::Combat *ui;
     QVector <Heros*> m_personnages;
     QVector <Personnage*> m_mechants;
-    QVector <Attaque*> m_turnAttaques;
-    QVector <QVector <Personnage*>> m_ciblesAttaque; //voir setattaque.cpp
+    QVector <Attaque*> m_turnAttaques; //les attaques sélectionnées
+    QVector <QVector <Personnage*>> m_ciblesAttaque; //voir setattaque.h
+    QVector <Personnage*> m_attaquants;
+    QVector <QColor> m_ennemiesColor;
+
+    void clicked (Personnage *traite);
+    void beforeRemovingEnnemy(Personnage *toRemove);
+
+    /*Petite précision :
+     * m_turnAttaques : les attaques à réaliser, dans l'ordre
+     * m_ciblesAttaques : les cibles de l'attaque, à réaliser
+     * m_attaquants : les attaquants, dans l'ordre, qui vont éxecuter les attaques du tableau */
 };
 
 #endif // COMBAT_H

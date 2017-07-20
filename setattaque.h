@@ -6,7 +6,7 @@
 #include <heros.h>
 #include <personnage.h>
 #include <QVector>
-#include <QVector2D>
+#include <QDebug>
 
 namespace Ui {
 class setAttaque;
@@ -18,19 +18,38 @@ class setAttaque : public QDialog
 
 public:
     explicit setAttaque(Personnage *attaquant,
-                        QVector <Personnage*> ennemis,
-                        QVector <Heros*> personnages,
+                        QVector <Personnage*> &ennemis,
+                        QVector <Heros*> &personnages,
                         QVector <Attaque*> &attaquesBuffer,
                         QVector <QVector<Personnage*>> &ciblesAttaque,
                         QWidget *parent = 0);
     ~setAttaque();
 
+private slots:
+    void on_pushButton_clicked();
+
+    void on_attaquesTableWidget_cellActivated(int row, int column);
+
+    void on_herosTableWidget_cellDoubleClicked(int row, int column);
+
+    void on_pushButton_2_clicked();
+
+    void on_ennemisTableWidget_cellDoubleClicked(int row, int column);
+
 private:
     Ui::setAttaque *ui;
+    Personnage *m_attaquant;
     QVector <Heros*> m_personnages;
-    QVector <Personnage> m_ennemis;
+    QVector <Personnage*> m_ennemis;
     QVector <Attaque*> *m_attaquesBuffer;
-    QVector <QVector<Personnage*>> *ciblesAttaque;
+    QVector <QVector<Personnage*>> *m_ciblesAttaque;
+    QVector <int> m_rowSelectedHeros;
+    QVector <int> m_rowSelectedMechants;
+
+    QVector <Attaque*> m_attaqueAffichee;
+
+    //variables des tableaux
+    int m_currentAttaqueTableCellRow;
 
     /* à propos du tableau ciblesAttaque :
      * une colonne : une attaque

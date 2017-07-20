@@ -1,7 +1,17 @@
 #include "personnage.h"
 
+int Personnage::id = 0;
+
+int Personnage::setId()
+{
+    id++;
+    m_id = id;
+    return id;
+}
+
 Personnage::Personnage(QObject *parent) : QObject(parent)
 {
+    setId();
     m_vie = 100;
     m_vieMax = 100;
     m_mp = 50;
@@ -55,16 +65,32 @@ Personnage::Personnage(QObject *parent) : QObject(parent)
     permanentEffectModifier.push_back(0);
     permanentEffectModifier.push_back(0);
 
-    m_attaques.push_back(Attaque(20, "attaque test", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, effectsModifier, permanentEffectModifier, 1));
+    QVector <double> luckEffects;
+    luckEffects.push_back(0);
+    luckEffects.push_back(0);
+    luckEffects.push_back(0);
+    luckEffects.push_back(0);
+
     m_degats = 1;
 	
 	
 }
 
+Personnage::Personnage(const Personnage &toCopy) : m_vie(toCopy.m_vie),m_mp(toCopy.m_mp),m_vieBuffer(toCopy.m_vieBuffer),m_mpBuffer(toCopy.m_mpBuffer),m_vieMax(toCopy.m_vieMax),
+                                                   m_mpMax(toCopy.m_mpMax),m_nom(toCopy.m_nom),m_degats(toCopy.m_degats),m_heal(toCopy.m_heal),m_degatsBuffer(toCopy.m_degatsBuffer),
+                                                   m_defense(toCopy.m_defense),m_defenseBuffer(toCopy.m_defenseBuffer),m_critiqueHit(toCopy.m_critiqueHit),m_dodgeHit(toCopy.m_dodgeHit),
+                                                   m_dodgeHitBuffer(toCopy.m_dodgeHitBuffer),m_critHitBuffer(toCopy.m_critHitBuffer),m_critique(toCopy.m_critique),m_critiqueBuffer(toCopy.m_critHitBuffer),
+                                                   m_absorption(toCopy.m_absorption),m_absoptionBuffer(toCopy.m_absoptionBuffer),m_isOnFire(false),m_isPoisoned(false),m_isFrozen(false),m_isStuned(false),
+                                                   m_fireTimer(0),m_frozenTimer(0),m_poisonTimer(0),m_stunTimer(0),m_level(toCopy.m_level),m_isInDefenseState(false),m_isDeath(false),m_attaques(*new QVector <Attaque *> (toCopy.m_attaques))
+{
+    setId();
+}
+
 Personnage::Personnage(int vie, int vieMax, int mp, int mpMax, QString& nom,
                        int level, double defense, double critique,
-                       double absorption, int critHit, int dodgeHit, QVector<Attaque>& attaques, QObject *parent) : QObject(parent)
+                       double absorption, int critHit, int dodgeHit, QVector<Attaque*>& attaques, QObject *parent) : QObject(parent)
 {
+    setId();
     m_vie = vie;
     m_vieMax = vieMax;
     m_vieBuffer = 0;
@@ -103,6 +129,28 @@ Personnage::Personnage(int vie, int vieMax, int mp, int mpMax, QString& nom,
     m_attaques = attaques;
     m_degats = 1;
 
+    QVector <int> blankEffect;
+    blankEffect.push_back(0);
+    blankEffect.push_back(0);
+    blankEffect.push_back(0);
+    blankEffect.push_back(0);
+
+    QVector <double> blankEffectDouble;
+    blankEffectDouble.push_back(0);
+    blankEffectDouble.push_back(0);
+    blankEffectDouble.push_back(0);
+    blankEffectDouble.push_back(0);
+
+    m_attaques.push_back(new Attaque (0,"Passer son tour",0,0,1,0,0,0,0,0,0,0,0,blankEffect,blankEffectDouble,blankEffect,9999,0,"Passer son tour"));
+
+}
+
+bool Personnage::equal(Personnage const& b) const
+{
+    if(m_nom == b.m_nom && m_vie == b.m_vie && m_level == b.m_level && m_id == b.m_id)
+        return true;
+    else
+        return false;
 }
 
 void Personnage::setVie(int newVie){
@@ -116,8 +164,9 @@ void Personnage::setVie(int newVie){
     }
 }
 
-Personnage::Personnage(QString path, QObject *parent) : QObject(parent) //constructeur à partir de fichier
+Personnage::Personnage(QString path, QVector <Attaque*> attaques, QObject *parent) : QObject(parent) //constructeur à partir de fichier
 {
+    setId();
     //pas de buffer d'HP ou de MP, donc initialisation normale
     QVector <QString> donnees = getFile(path);
 
@@ -163,24 +212,10 @@ Personnage::Personnage(QString path, QObject *parent) : QObject(parent) //constr
     int healBuffer = donnees[12].toInt();
     m_heal = healBuffer;
 
-    int nombreLignesFait = 12;
-    while(donnees.size() - 19 >= 19)
-    {
-        QVector <QString> nouvelleAttaqueSave;
-        int loop = 1;
-        while (loop <20)
-        {
-            nouvelleAttaqueSave.push_back(donnees[nombreLignesFait + loop]);
-            ++nombreLignesFait;
-            loop++;
-        }
-        Attaque truc(nouvelleAttaqueSave);
-        m_attaques.push_back(truc);
-        m_degats = 1;
+    m_attaques = attaques;
 
-    }
 
-    //inchangé
+   //inchangé
     m_isOnFire = m_isFrozen = m_isPoisoned = m_isStuned = false;
     m_isDeath = false;
     //effects stats
@@ -208,7 +243,7 @@ Personnage::Personnage(QString path, QObject *parent) : QObject(parent) //constr
 
 }
 
-void Personnage::rewrite(int vie, int vieMax, int mp, int mpMax, QString &nom, int level, double defense, double critique, double absorption, int critHit, int dodgeHit, QVector<Attaque> &attaques)
+void Personnage::rewrite(int vie, int vieMax, int mp, int mpMax, QString nom, int level, double defense, double critique, double absorption, int critHit, int dodgeHit, QVector<Attaque*> &attaques)
 {
     m_vie = vie;
     m_vieMax = vieMax;
@@ -245,12 +280,30 @@ void Personnage::rewrite(int vie, int vieMax, int mp, int mpMax, QString &nom, i
     m_isOnFire = m_isFrozen = m_isPoisoned = m_isStuned = false; //ça marche ça ?
     m_isInDefenseState = false;
 
-    m_attaques = attaques;
-    m_degats = 1;
+    QVector <int> blankEffect;
+    blankEffect.push_back(0);
+    blankEffect.push_back(0);
+    blankEffect.push_back(0);
+    blankEffect.push_back(0);
+
+    QVector <double> blankEffectDouble;
+    blankEffectDouble.push_back(0);
+    blankEffectDouble.push_back(0);
+    blankEffectDouble.push_back(0);
+    blankEffectDouble.push_back(0);
+
+    m_attaques.push_back(new Attaque (0,"Passer son tour",0,0,1,0,0,0,0,0,0,0,0,blankEffect,blankEffectDouble,blankEffect,9999,0,"Passer son tour"));
+
+    int loop = 0;
+    while (loop != attaques.count())
+    {
+        m_attaques.push_back(attaques[loop]);
+        loop++;
+    }
 
 }
 
-void Personnage::rewrite(QString path)
+void Personnage::rewrite(QString path, QVector <Attaque*> attaques)
 {
     //pas de buffer d'HP ou de MP, donc initialisation normale
     QVector <QString> donnees = getFile(path);
@@ -297,21 +350,25 @@ void Personnage::rewrite(QString path)
     int healBuffer = donnees[12].toInt();
     m_heal = healBuffer;
 
-    int nombreLignesFait = 12;
-    while(donnees.size() - 19 >= 19)
-    {
-        QVector <QString> nouvelleAttaqueSave;
-        int loop = 1;
-        while (loop <20)
-        {
-            nouvelleAttaqueSave.push_back(donnees[nombreLignesFait + loop]);
-            ++nombreLignesFait;
-            loop++;
-        }
-        Attaque truc(nouvelleAttaqueSave);
-        m_attaques.push_back(truc);
-        m_degats = 1;
+    QVector <int> blankEffect;
+    blankEffect.push_back(0);
+    blankEffect.push_back(0);
+    blankEffect.push_back(0);
+    blankEffect.push_back(0);
 
+    QVector <double> blankEffectDouble;
+    blankEffectDouble.push_back(0);
+    blankEffectDouble.push_back(0);
+    blankEffectDouble.push_back(0);
+    blankEffectDouble.push_back(0);
+
+    m_attaques.push_back(new Attaque (0,"Passer son tour",0,0,1,0,0,0,0,0,0,0,0,blankEffect,blankEffectDouble,blankEffect,9999,0,"Passer son tour"));
+
+    int loop = 0;
+    while (loop != attaques.count())
+    {
+        m_attaques.push_back(attaques[loop]);
+        loop++;
     }
 
     //inchangé
@@ -638,44 +695,44 @@ void Personnage::save(QString filePath) //a finir...
     int loopAttaques = 0;
     while (loopAttaques < m_attaques.size())
     {
-        int degats = m_attaques[loopAttaques].getDegats();
+        int degats = m_attaques[loopAttaques]->getDegats();
         merd.push_back(QString::number(degats));
 
-        QString nom = m_attaques[loopAttaques].getName();
+        QString nom = m_attaques[loopAttaques]->getName();
         merd.push_back(nom);
 
-        int heal = m_attaques[loopAttaques].getHeal();
+        int heal = m_attaques[loopAttaques]->getHeal();
         merd.push_back(QString::number(heal));
 
-        int mpCost = m_attaques[loopAttaques].getMpCost();
+        int mpCost = m_attaques[loopAttaques]->getMpCost();
         merd.push_back(QString::number(mpCost));
 
-        int persistence = m_attaques[loopAttaques].getPersistence();
+        int persistence = m_attaques[loopAttaques]->getPersistence();
         merd.push_back(QString::number(persistence));
 
-        double degatsModifier = m_attaques[loopAttaques].getDegatsModifier();
+        double degatsModifier = m_attaques[loopAttaques]->getDegatsModifier();
         merd.push_back(QString::number(degatsModifier));
 
-        double armureModifier = m_attaques[loopAttaques].getArmureModifier();
+        double armureModifier = m_attaques[loopAttaques]->getArmureModifier();
         merd.push_back(QString::number(armureModifier));
 
-        double mpCostModifier = m_attaques[loopAttaques].getMpCostModifier();
+        double mpCostModifier = m_attaques[loopAttaques]->getMpCostModifier();
         merd.push_back(QString::number(mpCostModifier));
 
-        double absoModifier = m_attaques[loopAttaques].getAbsoModifier();
+        double absoModifier = m_attaques[loopAttaques]->getAbsoModifier();
         merd.push_back(QString::number(absoModifier));
 
-        int dodgeHitModifier = m_attaques[loopAttaques].getDodgeModifier();
+        int dodgeHitModifier = m_attaques[loopAttaques]->getDodgeModifier();
         merd.push_back(QString::number(dodgeHitModifier));
 
-        int critHitModifier = m_attaques[loopAttaques].getCriticalModifier();
+        int critHitModifier = m_attaques[loopAttaques]->getCriticalModifier();
         merd.push_back(QString::number(critHitModifier));
 
-        double critModifier = m_attaques[loopAttaques].getAttaqueCritModifier();
+        double critModifier = m_attaques[loopAttaques]->getAttaqueCritModifier();
         merd.push_back(QString::number(critModifier));
 
         int loop2 = 0;
-        QVector <int> effets = m_attaques[loopAttaques].getEffectsModifier();
+        QVector <int> effets = m_attaques[loopAttaques]->getEffectsModifier();
         while (loop2 < 4)
         {
             merd.push_back(QString::number(effets[loop2]));
@@ -683,18 +740,18 @@ void Personnage::save(QString filePath) //a finir...
             loop2++;
         }
 
-        int charge = m_attaques[loopAttaques].getCharge();
+        int charge = m_attaques[loopAttaques]->getCharge();
         merd.push_back(QString::number(charge));
 
         loop2 = 0;
-        QVector <int> permanentEffets = m_attaques[loopAttaques].getPermanentEffectsModifier();
+        QVector <int> permanentEffets = m_attaques[loopAttaques]->getPermanentEffectsModifier();
         while (loop2 < 4)
         {
             merd.push_back(QString::number(permanentEffets[loop2]));
             loop2++;
         }
 
-        int attaqueId = m_attaques[loopAttaques].getId();
+        int attaqueId = m_attaques[loopAttaques]->getId();
         merd.push_back(QString::number(attaqueId));
 
 
@@ -901,32 +958,60 @@ void Personnage::combat(Personnage &cible, Attaque *bonneAttaque)
             degats = degats * (m_level * 1.031);
             degats = degats * (de/1000);
             degats = degats * m_degats;
-            int totalCritique = (bonneAttaque->getCriticalModifier());
+            int totalCritique = m_critiqueHit;
+            totalCritique =- bonneAttaque->getCriticalModifier();
+            totalCritique =- m_critHitBuffer;
             if (de > totalCritique)
             {
-                int degatsFinaux = static_cast <int> (degatAttaque);
+                int degatsFinaux = static_cast <int> (degats);
+                degats = degats * bonneAttaque->getAttaqueCritModifier();
                 cible.degat(degatsFinaux);
             }
             m_mp = m_mp - bonneAttaque->getMpCost();
 
             QVector <int> effects = bonneAttaque->getEffectsModifier();
-            if (effects[0] > 0)
+            QVector <double> effectsLuck = bonneAttaque->getEffectsLuck();
+
+            int deEffects = rand() % 100 + 1;
+            if (effects[0] > 0 && effectsLuck[0] * 100 >= deEffects)
             {
                 cible.putOnEffect(1, effects[0]);
             }
-            if (effects[1] > 0)
+            if (effects[1] > 0 && effectsLuck[1] * 100 >= deEffects)
             {
-                cible.putOnEffect(2, effects[0]);
+                cible.putOnEffect(2, effects[1]);
             }
-            if (effects[2] > 0)
+            if (effects[2] > 0 && effectsLuck[2] * 100 >= deEffects)
             {
-                cible.putOnEffect(3, effects[0]);
+                cible.putOnEffect(3, effects[2]);
             }
-            if (effects[3] > 0)
+            if (effects[3] > 0 && effectsLuck[3] * 100 >= deEffects)
             {
-                cible.putOnEffect(4, effects[0]);
+                cible.putOnEffect(4, effects[3]);
             }
 
+        }
+
+        if (bonneAttaque->getId() == 306)
+        {
+            QVector <int> effetsChanges;
+            effetsChanges.push_back(0);
+            effetsChanges.push_back(0);
+            effetsChanges.push_back(0);
+            effetsChanges.push_back(0);
+
+            SlacshEffectAttaqueDial *effets = new SlacshEffectAttaqueDial(&effetsChanges);
+            effets->exec();
+
+            int loop = 0;
+            while (loop != 3)
+            {
+                if (effetsChanges[loop] > 0)
+                {
+                    putOnEffect(loop + 1,effetsChanges[loop]);
+                }
+                loop++;
+            }
         }
     }
 }
@@ -947,14 +1032,33 @@ Attaque Personnage::returnAttaque(int attaqueId)
     int counter = 0;
     while (bonneAttaque = NULL)
     {
-        int idAttaqueAnalysee = m_attaques[counter].getId();
+        int idAttaqueAnalysee = m_attaques[counter]->getId();
         if (idAttaqueAnalysee == attaqueId)
         {
-            bonneAttaque = &m_attaques[counter];
+            bonneAttaque = m_attaques[counter];
         }
         counter++;
     }
 
     return *bonneAttaque;
 
+}
+
+QVector <Attaque*> Personnage::getAttaques()
+{
+    return m_attaques;
+}
+
+Personnage::~Personnage()
+{
+    while (m_attaques.count() != 0)
+    {
+        delete m_attaques[m_attaques.count() - 1];
+        m_attaques.pop_back();
+    }
+}
+
+void Personnage::setAttaque(QVector<Attaque *> newAttaques)
+{
+    m_attaques = newAttaques;
 }

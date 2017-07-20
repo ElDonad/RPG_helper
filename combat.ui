@@ -191,6 +191,25 @@
        <string>MP</string>
       </property>
      </widget>
+     <widget class="QLabel" name="warningBourrin">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>60</y>
+        <width>47</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="pixmap">
+       <pixmap>../code/dossier sauvegarde/save/warning.png</pixmap>
+      </property>
+     </widget>
     </widget>
     <widget class="QGroupBox" name="mageBox">
      <property name="geometry">
@@ -273,6 +292,25 @@
       </property>
       <property name="text">
        <string>MP</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="warningMage">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>60</y>
+        <width>47</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="pixmap">
+       <pixmap>../code/dossier sauvegarde/save/warning.png</pixmap>
       </property>
      </widget>
     </widget>
@@ -359,6 +397,25 @@
        <string>MP</string>
       </property>
      </widget>
+     <widget class="QLabel" name="warningChaman">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>60</y>
+        <width>47</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="pixmap">
+       <pixmap>../code/dossier sauvegarde/save/warning.png</pixmap>
+      </property>
+     </widget>
     </widget>
     <widget class="QGroupBox" name="assassinBox">
      <property name="geometry">
@@ -441,6 +498,25 @@
       </property>
       <property name="text">
        <string>MP</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="warningAssassin">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>60</y>
+        <width>47</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="pixmap">
+       <pixmap>../code/dossier sauvegarde/save/warning.png</pixmap>
       </property>
      </widget>
     </widget>
@@ -527,6 +603,25 @@
        <string>MP</string>
       </property>
      </widget>
+     <widget class="QLabel" name="warningArcher">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>60</y>
+        <width>47</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="pixmap">
+       <pixmap>../code/dossier sauvegarde/save/warning.png</pixmap>
+      </property>
+     </widget>
     </widget>
     <widget class="QGroupBox" name="healerBox">
      <property name="geometry">
@@ -611,6 +706,25 @@
        <string>MP</string>
       </property>
      </widget>
+     <widget class="QLabel" name="warningHealer">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>60</y>
+        <width>47</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="pixmap">
+       <pixmap>../code/dossier sauvegarde/save/warning.png</pixmap>
+      </property>
+     </widget>
     </widget>
    </widget>
   </widget>
@@ -658,6 +772,80 @@
    </property>
    <property name="text">
     <string>Fin du tour</string>
+   </property>
+  </widget>
+  <widget class="QTableWidget" name="attaquesTableWidget">
+   <property name="geometry">
+    <rect>
+     <x>230</x>
+     <y>250</y>
+     <width>331</width>
+     <height>192</height>
+    </rect>
+   </property>
+   <attribute name="horizontalHeaderCascadingSectionResizes">
+    <bool>false</bool>
+   </attribute>
+   <attribute name="horizontalHeaderDefaultSectionSize">
+    <number>144</number>
+   </attribute>
+   <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
+    <bool>false</bool>
+   </attribute>
+   <attribute name="horizontalHeaderStretchLastSection">
+    <bool>true</bool>
+   </attribute>
+   <attribute name="verticalHeaderVisible">
+    <bool>false</bool>
+   </attribute>
+   <column>
+    <property name="text">
+     <string>Attaquant</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Attaque</string>
+    </property>
+   </column>
+  </widget>
+  <widget class="QPushButton" name="eraseAttaqueButton">
+   <property name="geometry">
+    <rect>
+     <x>230</x>
+     <y>450</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>supprimer</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="PresetsButton">
+   <property name="geometry">
+    <rect>
+     <x>480</x>
+     <y>220</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Presets</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="editButton">
+   <property name="geometry">
+    <rect>
+     <x>480</x>
+     <y>120</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Editer</string>
    </property>
   </widget>
  </widget>

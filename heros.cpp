@@ -7,7 +7,7 @@ Heros::Heros() : Personnage()
     //connect(this, SIGNAL(setWidgetUi(Heros,int,QString)), MainWindow, SLOT(setPersoWidgets(Heros,int,QString)))
 }
 
-Heros::Heros(QString path) : Personnage(path)
+Heros::Heros(QString path, QVector <Attaque*> attaques) : Personnage(path, attaques)
 {
 
 }

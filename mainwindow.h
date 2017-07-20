@@ -26,6 +26,7 @@ public:
     void setWidgetUi(int idPerso, int widget, QString newValue);
     void saveMain(QString path);
     void updateGui();
+    
 
 private:
     Ui::MainWindow *ui;
@@ -36,7 +37,11 @@ private:
 private :
     //groupes de widget par perso
     Heros m_bourrin;
-    Heros Mage;
+    Heros m_mage;
+    Heros m_assassin;
+    Heros m_healer;
+    Heros m_shaman;
+    Heros m_archer;
 
 
     //Path principal (au besoin, je cherche pourquoi les path relatifs ne marchent pas

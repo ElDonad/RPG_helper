@@ -11,9 +11,10 @@ public:
     Attaque(QVector <QString> saveVector);
     Attaque(int degats,
             QString nom,
-            int heal,
+            double heal,
             int mpCost,
             int persistence,
+            int charge,
             double degatsModifier,
             double armureModifier,
             double mpCostModifier,
@@ -22,16 +23,24 @@ public:
             int critHitModifier,
             double critAttaqueModifier,
             QVector <int> effectsModifier,
+            QVector <double> effectsLuck,
             QVector <int> permanentEffectsModifier,
-            int attaqueId);
+            int attaqueId,
+            int level,
+            QString description = "Aucune description");
     
 
 private :
-	int m_attaqueId;
+    virtual void supActions();//actions supplémentaires.
+
+    virtual void onSelected();//méthode devant être appelée quand l'attaque est sélectionnée dans le tableau des attaques
+
+    QString m_description;
+    int m_attaqueId;
 
     int m_degats;
 
-    int m_heal;
+    double m_heal;//en pourcentages
 
     int m_mpCost;
     int m_persistence;
@@ -53,7 +62,10 @@ private :
     double m_attaqueCritModifier;
 
     QVector <int> m_effectsModifier;
+    QVector <double> m_effectsLuck;
+
     int m_charge;
+    int m_level;
     QVector <int> m_permanentEffectModifier; //totem, speedy, yin et yang
 
 
@@ -63,8 +75,9 @@ public :
     int returnEffectModifier (int effect);
 
     //acesseurs
+    int getLevel();
     int getDegats();//fait
-    int getHeal();//fait
+    double getHeal();//fait
     int getMpCost();//fait
     int getPersistence();//fait
     QString getName();//fait
@@ -78,12 +91,14 @@ public :
     QVector <int> getEffectsModifier();//fait
     int getCharge();//fait
     QVector <int> getPermanentEffectsModifier();//fait
+    QVector <double> getEffectsLuck();//fait
 
     //utilitaires supplémentaires
     int getTotalPersistence();//fait
-    QVector <QString> returnSaveVector();
+    //QVector <QString> returnSaveVector();
 
     int getId();
+    QString getDescription();
 
 };
 

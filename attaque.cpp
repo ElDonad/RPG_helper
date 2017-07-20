@@ -37,7 +37,7 @@ Attaque::Attaque(QVector <QString> saveVector)
 
     m_nom = saveVector[1];
 
-    int heal = saveVector[2].toInt();
+    double heal = saveVector[2].toDouble();
     m_heal = heal;
 
     int mpCost = saveVector[3].toInt();
@@ -104,9 +104,10 @@ Attaque::Attaque(QVector <QString> saveVector)
 
 Attaque::Attaque(int degats,
                  QString nom,
-                 int heal,
+                 double heal,
                  int mpCost,
                  int persistence,
+                 int charge,
                  double degatsModifier,
                  double armureModifier,
                  double mpCostModifier,
@@ -115,14 +116,18 @@ Attaque::Attaque(int degats,
                  int critHitModifier,
                  double critAttaqueModifier,
                  QVector<int> effectsModifier,
+                 QVector <double> effectsLuck,
                  QVector<int> permanentEffectsModifier,
-                 int attaqueId)
+                 int attaqueId,
+                 int level,
+                 QString description)
 {
     m_degats = degats;
     m_heal = heal;
     m_nom = nom;
     m_mpCost = mpCost;
-    m_persistence = persistence;
+    m_persistence = persistence + charge;
+    m_charge = charge;
     m_degatsModifier = degatsModifier;
     m_armureModifier = armureModifier;
     m_mpCostModifier = mpCostModifier;
@@ -131,8 +136,11 @@ Attaque::Attaque(int degats,
     m_criticalModifier = critHitModifier;
     m_attaqueCritModifier = critAttaqueModifier;
     m_effectsModifier = effectsModifier;
+    m_effectsLuck = effectsLuck;
     m_permanentEffectModifier = permanentEffectsModifier;
     m_attaqueId = attaqueId;
+    m_level = level;
+    m_description = description;
 }
 
 int Attaque::returnEffectModifier(int effect)
@@ -146,7 +154,7 @@ int Attaque::getDegats()
     return m_degats;
 }
 
-int Attaque::getHeal()
+double Attaque::getHeal()
 {
     return m_heal;
 }
@@ -226,5 +234,30 @@ int Attaque::getTotalPersistence()
 int Attaque::getId()
 {
     return m_attaqueId;
+}
+
+QVector <double> Attaque::getEffectsLuck()
+{
+    return m_effectsLuck;
+}
+
+QString Attaque::getDescription()
+{
+    return m_description;
+}
+
+int Attaque::getLevel()
+{
+    return m_level;
+}
+
+void Attaque::supActions()
+{
+
+}
+
+void Attaque::onSelected()
+{
+
 }
 

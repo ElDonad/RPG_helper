@@ -63,3 +63,8 @@ void StatsModifier::on_maxMpSpinBox_valueChanged(int arg1)
 
 
 
+
+void StatsModifier::on_pushButton_2_clicked()
+{
+    this->close();
+}
