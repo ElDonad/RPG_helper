@@ -12,6 +12,10 @@
 #include <QTableWidgetItem>
 #include <savetools.h>
 #include <operatorequal.h>
+#include <ennemiesset.h>
+#include <briefing.h>
+#include <infospersos.h>
+
 
 
 namespace Ui {
@@ -46,6 +50,26 @@ private slots:
 
     void on_editButton_clicked();
 
+    void on_pushButton_clicked();
+
+    void on_toolButton_clicked();
+
+    void on_bourrinInfos_clicked();
+
+    void on_mageInfos_clicked();
+
+    void on_chamanInfos_clicked();
+
+    void on_assassinInfos_clicked();
+
+    void on_ArcherInfos_clicked();
+
+    void on_healerInfos_clicked();
+
+    void on_infos_clicked();
+
+    void on_clearButton_clicked();
+
 private:
     Ui::Combat *ui;
     QVector <Heros*> m_personnages;
@@ -54,9 +78,13 @@ private:
     QVector <QVector <Personnage*>> m_ciblesAttaque; //voir setattaque.h
     QVector <Personnage*> m_attaquants;
     QVector <QColor> m_ennemiesColor;
+    QVector <Personnage> m_presets;
 
     void clicked (Personnage *traite);
     void beforeRemovingEnnemy(Personnage *toRemove);
+    //pour l'affichage des fins de tour
+    QVector <QString> addQVector (QVector<QString>base,QVector <QString> aAjouter);
+    void splash(QVector<QString> toDisplay);
 
     /*Petite précision :
      * m_turnAttaques : les attaques à réaliser, dans l'ordre

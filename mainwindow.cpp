@@ -52,49 +52,49 @@ MainWindow::MainWindow(QWidget *parent) :
         //bourrin : fait
         QVector <Attaque*> bourrinAttaques;
         QString bourrinName("Bourrin");
-        bourrinAttaques.push_back(new Attaque(75,bourrinName,0,0,1,0,0,0,0,0,0,0,0,blankEffects,blankEffectsDouble,blankEffects, 101,1));//SPECIAL : désactive l'état défense du bourrin pendant le reste du tour
-        bourrinAttaques.push_back(new Attaque(50,"Smash",0,0,1,0,0,0,0,0,0,0,0,blankEffects,blankEffectsDouble,blankEffects,102,1));
-        bourrinAttaques.push_back(new Attaque(60,"Bonk",0,0,1,0,0,0,0,0,0,0,0,blankEffects,blankEffectsDouble,blankEffects,103,1));//10% chance de faire du stun
-        bourrinAttaques.push_back(new Attaque(0,"Heal",0.1,0,1,0,0,0,0,0,0,0,0,blankEffects,blankEffectsDouble,blankEffects,104,1));//!! vérifier heal en pourcentages
-        bourrinAttaques.push_back(new Attaque(0,"Proteccio",0,0,1,0,0,0,0,0.4,0,0,0,blankEffects,blankEffectsDouble,blankEffects,105,1));//voir suites.txt
-        bourrinAttaques.push_back(new Attaque(70,"Pirouette",0,0,1,0,0,0,0,0,0,0,0,blankEffects,blankEffectsDouble,blankEffects,106,2));
-        bourrinAttaques.push_back(new Attaque(30,"Tremblement De Terre",0,0,1,0,0,0,0,0,0,0,0,blankEffects,blankEffectsDouble,blankEffects,107,3));
-        bourrinAttaques.push_back(new Attaque(0, "Shield",0,0,1,0,0,0,0,0,0,0,0,blankEffects,blankEffectsDouble,blankEffects,108,4));
-        bourrinAttaques.push_back(new Attaque(100,"Bourrin 2",0,0,1,0,0,0,0,0,0,0,0,blankEffects,blankEffectsDouble,blankEffects,109,5));//10% chance de stun
-        bourrinAttaques.push_back(new Attaque(0,"Proteccio 2",0,0,1,0,0,0,0,0.6,0,0,0,blankEffects,blankEffectsDouble,blankEffects,110,5));//comme proteccio 1
-        bourrinAttaques.push_back(new Attaque(80,"Smash 2",0,0,1,0,0,0,0,0,0,0,0,blankEffects,blankEffectsDouble,blankEffects,111,6));
-        bourrinAttaques.push_back(new Attaque(85,"Bonk 2",0,0,1,0,0,0,0,0,0,0,0,blankEffects,blankEffectsDouble,blankEffects,112,7));//20% de stun
-        bourrinAttaques.push_back(new Attaque(110,"Pirouette 2",0,0,1,0,0,0,0,0,0,0,0,blankEffects,blankEffectsDouble,blankEffects,113,8));
-        bourrinAttaques.push_back(new Attaque(0,"Shield 2",0,0,1,0,0,0,0,0,0,0,0,blankEffects,blankEffectsDouble,blankEffects,114,9));//4* les PV du bourrin
-        bourrinAttaques.push_back(new Attaque(130,"Bourrin 3",0,0,2,0,0,0,0,0,0,0,0,blankEffects,blankEffectsDouble,blankEffects,115,10));//30% stun
+        bourrinAttaques.push_back(new Attaque(75,bourrinName,0,0,1,0,0,0,0,0,0,0,0,blankEffects,blankEffects,blankEffects, 101,1));//SPECIAL : désactive l'état défense du bourrin pendant le reste du tour
+        bourrinAttaques.push_back(new Attaque(50,"Smash",0,0,1,0,0,0,0,0,0,0,0,blankEffects,blankEffects,blankEffects,102,1));
+        bourrinAttaques.push_back(new Attaque(60,"Bonk",0,0,1,0,0,0,0,0,0,0,0,blankEffects,blankEffects,blankEffects,103,1));//10% chance de faire du stun
+        bourrinAttaques.push_back(new Attaque(0,"Heal",0.1,0,1,0,0,0,0,0,0,0,0,blankEffects,blankEffects,blankEffects,104,1));//!! vérifier heal en pourcentages
+        bourrinAttaques.push_back(new Attaque(0,"Proteccio",0,0,1,0,0,0,0,0.4,0,0,0,blankEffects,blankEffects,blankEffects,105,1));//voir suites.txt
+        bourrinAttaques.push_back(new Attaque(70,"Pirouette",0,0,1,0,0,0,0,0,0,0,0,blankEffects,blankEffects,blankEffects,106,2));
+        bourrinAttaques.push_back(new Attaque(30,"Tremblement De Terre",0,0,1,0,0,0,0,0,0,0,0,blankEffects,blankEffects,blankEffects,107,3));
+        bourrinAttaques.push_back(new Attaque(0, "Shield",0,0,1,0,0,0,0,0,0,0,0,blankEffects,blankEffects,blankEffects,108,4));
+        bourrinAttaques.push_back(new Attaque(100,"Bourrin 2",0,0,1,0,0,0,0,0,0,0,0,blankEffects,blankEffects,blankEffects,109,5));//10% chance de stun
+        bourrinAttaques.push_back(new Attaque(0,"Proteccio 2",0,0,1,0,0,0,0,0.6,0,0,0,blankEffects,blankEffects,blankEffects,110,5));//comme proteccio 1
+        bourrinAttaques.push_back(new Attaque(80,"Smash 2",0,0,1,0,0,0,0,0,0,0,0,blankEffects,blankEffects,blankEffects,111,6));
+        bourrinAttaques.push_back(new Attaque(85,"Bonk 2",0,0,1,0,0,0,0,0,0,0,0,blankEffects,blankEffects,blankEffects,112,7));//20% de stun
+        bourrinAttaques.push_back(new Attaque(110,"Pirouette 2",0,0,1,0,0,0,0,0,0,0,0,blankEffects,blankEffects,blankEffects,113,8));
+        bourrinAttaques.push_back(new Attaque(0,"Shield 2",0,0,1,0,0,0,0,0,0,0,0,blankEffects,blankEffects,blankEffects,114,9));//4* les PV du bourrin
+        bourrinAttaques.push_back(new Attaque(130,"Bourrin 3",0,0,2,0,0,0,0,0,0,0,0,blankEffects,blankEffects,blankEffects,115,10));//30% stun
         
         m_bourrin.rewrite(200,200,0,0,"Bourrin",1,(0.4),(1.5),0,45,(-45),bourrinAttaques);
 
         //assassin
         QVector <Attaque*> assassinAttaques;
 
-        assassinAttaques.push_back(new Attaque(70,"Traître",0,25,1,0,0,0,0,0,0,0,0,blankEffects,blankEffectsDouble,blankEffects,201,1));
-        assassinAttaques.push_back(new Attaque(60,"Dash",0,25,1,0,0,0,0,0,0,0,0,blankEffects,blankEffectsDouble,blankEffects,202,1));
-        assassinAttaques.push_back(new Attaque(50,"Double lame",0,30,1,0,0,0,0,0,0,0,0,blankEffects,blankEffectsDouble,blankEffects,203,1));
-        assassinAttaques.push_back(new Attaque(0,"Invisi",0,20,1,0,0,0,0,0,0,35,0,blankEffects,blankEffectsDouble,blankEffects,204,1));
-        assassinAttaques.push_back(new Attaque(0,"Mana Heal",0,10,1,0,0,0,0,0,0,0,0,blankEffects,blankEffectsDouble,blankEffects,205,1));//régen 50 mana pour toute l'équipe, marin devra cibler tout le monde
-        assassinAttaques.push_back(new Attaque(45,"Tir",0,0,1,0,0,0,0,0,0,0,0,blankEffects,blankEffectsDouble,blankEffects,206,2));
-        assassinAttaques.push_back(new Attaque(0,"Empoisonnement",0,20,4,0,0,0,0,0,0,0,0,blankEffects,blankEffectsDouble,blankEffects,207,4));//voir suites.txt pour les particularités
-        assassinAttaques.push_back(new Attaque(90,"Dash 2",0,35,1,0,0,0,0,0,0,0,0,blankEffects,blankEffectsDouble,blankEffects,208,5));
-        assassinAttaques.push_back(new Attaque(70,"Tir 2",0,0,1,0,0,0,0,0,0,0,0,blankEffects,blankEffectsDouble,blankEffects,209,6));
-        assassinAttaques.push_back(new Attaque(0,"Mana heal 2",0,20,1,0,0,0,0,0,0,0,0,blankEffects,blankEffectsDouble,blankEffects,210,7));//même chose que mana heal 1 : 100 MP heal
-        assassinAttaques.push_back(new Attaque(80,"Double lame 2",0,50,1,0,0,0,0,0,0,0,0,blankEffects,blankEffectsDouble,blankEffects,211,8));
-        assassinAttaques.push_back(new Attaque(105,"Traître 2",0,35,1,0,0,0,0,0,0,0,0,blankEffects,blankEffectsDouble,blankEffects,212,9));
-        assassinAttaques.push_back(new Attaque(0,"Invisi 2",0,35,3,0,0,0,0,0,0,55,0,blankEffects,blankEffectsDouble,blankEffects,213,10));
+        assassinAttaques.push_back(new Attaque(70,"Traître",0,25,1,0,0,0,0,0,0,0,0,blankEffects,blankEffects,blankEffects,201,1));
+        assassinAttaques.push_back(new Attaque(60,"Dash",0,25,1,0,0,0,0,0,0,0,0,blankEffects,blankEffects,blankEffects,202,1));
+        assassinAttaques.push_back(new Attaque(50,"Double lame",0,30,1,0,0,0,0,0,0,0,0,blankEffects,blankEffects,blankEffects,203,1));
+        assassinAttaques.push_back(new Attaque(0,"Invisi",0,20,1,0,0,0,0,0,0,35,0,blankEffects,blankEffects,blankEffects,204,1));
+        assassinAttaques.push_back(new Attaque(0,"Mana Heal",0,10,1,0,0,0,0,0,0,0,0,blankEffects,blankEffects,blankEffects,205,1));//régen 50 mana pour toute l'équipe, marin devra cibler tout le monde
+        assassinAttaques.push_back(new Attaque(45,"Tir",0,0,1,0,0,0,0,0,0,0,0,blankEffects,blankEffects,blankEffects,206,2));
+        assassinAttaques.push_back(new Attaque(0,"Empoisonnement",0,20,4,0,0,0,0,0,0,0,0,blankEffects,blankEffects,blankEffects,207,4));//voir suites.txt pour les particularités
+        assassinAttaques.push_back(new Attaque(90,"Dash 2",0,35,1,0,0,0,0,0,0,0,0,blankEffects,blankEffects,blankEffects,208,5));
+        assassinAttaques.push_back(new Attaque(70,"Tir 2",0,0,1,0,0,0,0,0,0,0,0,blankEffects,blankEffects,blankEffects,209,6));
+        assassinAttaques.push_back(new Attaque(0,"Mana heal 2",0,20,1,0,0,0,0,0,0,0,0,blankEffects,blankEffects,blankEffects,210,7));//même chose que mana heal 1 : 100 MP heal
+        assassinAttaques.push_back(new Attaque(80,"Double lame 2",0,50,1,0,0,0,0,0,0,0,0,blankEffects,blankEffects,blankEffects,211,8));
+        assassinAttaques.push_back(new Attaque(105,"Traître 2",0,35,1,0,0,0,0,0,0,0,0,blankEffects,blankEffects,blankEffects,212,9));
+        assassinAttaques.push_back(new Attaque(0,"Invisi 2",0,35,3,0,0,0,0,0,0,55,0,blankEffects,blankEffects,blankEffects,213,10));
 
         m_assassin.rewrite(140,140,70,70,"Assassin",1,0.2,1.5,0,45,(-45),assassinAttaques);
 
         //mage
         QVector <Attaque*> mageAttaques;
 
-        mageAttaques.push_back(new Attaque(35,"Entouré",0,0,1,0,0,0,0,0,0,0,0,blankEffects,blankEffectsDouble,blankEffects,301,1));
-        mageAttaques.push_back(new Attaque(45,"Cercle divin",0,30,1,0,0,0,0,0,0,0,0,blankEffects,blankEffectsDouble,blankEffects,302,1));
-        mageAttaques.push_back(new Attaque(40,"Foudre",0,25,1,0,0,0,0,0,0,0,0,blankEffects,blankEffectsDouble,blankEffects,303,1));//baisse de 5pts de mana pendant trois tours
+        mageAttaques.push_back(new Attaque(35,"Entouré",0,0,1,0,0,0,0,0,0,0,0,blankEffects,blankEffects,blankEffects,301,1));
+        mageAttaques.push_back(new Attaque(45,"Cercle divin",0,30,1,0,0,0,0,0,0,0,0,blankEffects,blankEffects,blankEffects,302,1));
+        mageAttaques.push_back(new Attaque(40,"Foudre",0,25,1,0,0,0,0,0,0,0,0,blankEffects,blankEffects,blankEffects,303,1));//baisse de 5pts de mana pendant trois tours
 
 
         QVector <int> mageAttaqueSDF;
@@ -103,22 +103,22 @@ MainWindow::MainWindow(QWidget *parent) :
         mageAttaqueSDF.push_back(0);
         mageAttaqueSDF.push_back(0);
 
-        QVector <double> mageLuckSDF;
-        mageLuckSDF.push_back(1);
+        QVector <int> mageLuckSDF;
+        mageLuckSDF.push_back(100);
         mageLuckSDF.push_back(0);
         mageLuckSDF.push_back(0);
         mageLuckSDF.push_back(0);
 
-        QVector <double> fullLuck;
-        fullLuck.push_back(1);
-        fullLuck.push_back(1);
-        fullLuck.push_back(1);
-        fullLuck.push_back(1);
+        QVector <int> fullLuck;
+        fullLuck.push_back(100);
+        fullLuck.push_back(100);
+        fullLuck.push_back(100);
+        fullLuck.push_back(100);
 
         mageAttaques.push_back(new Attaque(50,"SDF",0,20,2,0,0,0,0,0,0,0,0,mageAttaqueSDF,mageLuckSDF,blankEffects,304,1));
-        mageAttaques.push_back(new Attaque(0,"Heal",0.1,15,1,0,0,0,0,0,0,0,0,blankEffects,blankEffectsDouble,blankEffects,305,1));
+        mageAttaques.push_back(new Attaque(0,"Heal",0.1,15,1,0,0,0,0,0,0,0,0,blankEffects,blankEffects,blankEffects,305,1));
         mageAttaques.push_back(new Attaque(0,"/effect",0,15,6,0,0,0,0,0,0,0,0,blankEffects,mageLuckSDF,blankEffects,306,2));
-        mageAttaques.push_back(new Attaque(0,"Mana Power",0,20,3,0,1.3,0,0,0,0,0,0,blankEffects,blankEffectsDouble,blankEffects,307,3));
+        mageAttaques.push_back(new Attaque(0,"Mana Power",0,20,3,0,1.3,0,0,0,0,0,0,blankEffects,blankEffects,blankEffects,307,3));
 
         QVector <int> mageEffectSDF2;
         mageEffectSDF2.push_back(4);
@@ -127,11 +127,11 @@ MainWindow::MainWindow(QWidget *parent) :
         mageEffectSDF2.push_back(0);
 
         mageAttaques.push_back(new Attaque(65,"SDF 2",0,50,4,1,0,0,0,0,0,0,0,mageEffectSDF2,mageLuckSDF,blankEffects,308,4));
-        mageAttaques.push_back(new Attaque(60,"Entouré 2",0,0,1,0,0,0,0,0,0,0,0,blankEffects,blankEffectsDouble,blankEffects,309,5));
-        mageAttaques.push_back(new Attaque(0,"Heal 2",0.35,30,1,0,0,0,0,0,0,0,0,blankEffects,blankEffectsDouble,blankEffects,310,6));
-        mageAttaques.push_back(new Attaque(65,"Foudre 2",0,50,1,0,0,0,0,0,0,0,0,blankEffects,blankEffectsDouble,blankEffects,311,7));
-        mageAttaques.push_back(new Attaque(0,"Mana power 2,",0,30,5,0,1.5,0,0,0,0,0,0,blankEffects,blankEffectsDouble,blankEffects,312,8));
-        mageAttaques.push_back(new Attaque(60,"Cercle divin 2",0,60,1,0,0,0,0,0,0,0,0,blankEffects,blankEffectsDouble,blankEffects,313,9));
+        mageAttaques.push_back(new Attaque(60,"Entouré 2",0,0,1,0,0,0,0,0,0,0,0,blankEffects,blankEffects,blankEffects,309,5));
+        mageAttaques.push_back(new Attaque(0,"Heal 2",0.35,30,1,0,0,0,0,0,0,0,0,blankEffects,blankEffects,blankEffects,310,6));
+        mageAttaques.push_back(new Attaque(65,"Foudre 2",0,50,1,0,0,0,0,0,0,0,0,blankEffects,blankEffects,blankEffects,311,7));
+        mageAttaques.push_back(new Attaque(0,"Mana power 2,",0,30,5,0,1.5,0,0,0,0,0,0,blankEffects,blankEffects,blankEffects,312,8));
+        mageAttaques.push_back(new Attaque(60,"Cercle divin 2",0,60,1,0,0,0,0,0,0,0,0,blankEffects,blankEffects,blankEffects,313,9));
 
         QVector <int> mageEffectSDF3;
         mageEffectSDF3.push_back(7);

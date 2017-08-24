@@ -12,6 +12,7 @@
 #include <savetools.h>
 #include <attaque.h>
 #include <slacsheffectattaquedial.h>
+#include <random>
 
 #include <QDialog>
 
@@ -33,7 +34,7 @@ public:
     ~Personnage();
 
     bool equal(Personnage const& b) const;
-    void combat(Personnage &cible, Attaque *bonneAttaque);//fait
+    QVector <QString> combat(Personnage &cible, Attaque *bonneAttaque);//fait
 
     void setVie(int newVie); //fait
     int getVie(); //fait
@@ -108,7 +109,7 @@ public:
     int getTotalMp();//fait
     double getTotalAbso();
 
-    void degat(int degatCount); //comprend la gestion de l'absorption et de la vie supplémentaire fait
+    QVector <QString> degat(int degatCount); //comprend la gestion de l'absorption et de la vie supplémentaire fait
     void levelUp(); //différentes augmentations de stats, défini à +20% pour l'instant, à redéfinir par la suite, fait
 
     void setDefenseState(bool defenseState);
@@ -123,7 +124,7 @@ public:
      * */
 
     void putOnEffect (int effect, int turnCount = 1);
-    void newTurn();
+    QVector<QString> newTurn();
     void endFight();
 
     void setTimer (int effectTimer, int value);
@@ -190,8 +191,10 @@ private :
     //effect stats
     bool m_isOnFire;
     int m_fireTimer;
+    int m_fireTimerBuffer;//augmente tant que l'effet reste actif, revient à 0 dès que l'effet cesse.
     bool m_isPoisoned;
     int m_poisonTimer;
+    int m_poisonTimerBuffer;//même chose
     bool m_isFrozen;
     int m_frozenTimer;
     bool m_isStuned;
@@ -205,6 +208,10 @@ private :
     //int m_defenseStateBuffer;
     bool m_isDeath;
     QVector <Attaque*> m_attaques;
+    void initializeClassicVariables();
+
+    //random
+
 
 };
 

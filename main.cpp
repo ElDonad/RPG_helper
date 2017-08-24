@@ -2,12 +2,12 @@
 #include <QApplication>
 #include <QDialog>
 #include <slacsheffectattaquedial.h>
+#include <briefing.h>
 
 int main(int argc, char *argv[])
 {
 
     QApplication a(argc, argv);
-
 
     MainWindow w;
     w.show();

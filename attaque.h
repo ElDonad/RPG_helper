@@ -23,7 +23,7 @@ public:
             int critHitModifier,
             double critAttaqueModifier,
             QVector <int> effectsModifier,
-            QVector <double> effectsLuck,
+            QVector <int> effectsLuck,
             QVector <int> permanentEffectsModifier,
             int attaqueId,
             int level,
@@ -62,10 +62,11 @@ private :
     double m_attaqueCritModifier;
 
     QVector <int> m_effectsModifier;
-    QVector <double> m_effectsLuck;
+    QVector <int> m_effectsLuck;
 
     int m_charge;
     int m_level;
+    bool m_isInitialized;
     QVector <int> m_permanentEffectModifier; //totem, speedy, yin et yang
 
 
@@ -91,14 +92,17 @@ public :
     QVector <int> getEffectsModifier();//fait
     int getCharge();//fait
     QVector <int> getPermanentEffectsModifier();//fait
-    QVector <double> getEffectsLuck();//fait
+    QVector<int> getEffectsLuck();//fait
 
     //utilitaires supplémentaires
     int getTotalPersistence();//fait
     //QVector <QString> returnSaveVector();
+    void newTurn();
 
     int getId();
     QString getDescription();
+    void initialize();
+    bool isInitialized();
 
 };
 

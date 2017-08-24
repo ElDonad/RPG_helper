@@ -35,7 +35,9 @@ SOURCES += main.cpp\
     setattaque.cpp \
     slacsheffectattaquedial.cpp \
     ennemiesset.cpp \
-    operatorequal.cpp
+    operatorequal.cpp \
+    briefing.cpp \
+    infospersos.cpp
 
 HEADERS  += mainwindow.h \
     personnage.h \
@@ -48,14 +50,18 @@ HEADERS  += mainwindow.h \
     setattaque.h \
     slacsheffectattaquedial.h \
     ennemiesset.h \
-    operatorequal.h
+    operatorequal.h \
+    briefing.h \
+    infospersos.h
 
 FORMS    += mainwindow.ui \
     combat.ui \
     statsmodifier.ui \
     setattaque.ui \
     slacsheffectattaquedial.ui \
-    ennemiesset.ui
+    ennemiesset.ui \
+    briefing.ui \
+    infospersos.ui
 
 DISTFILES += \
     tableau_noms

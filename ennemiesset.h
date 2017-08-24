@@ -5,6 +5,7 @@
 #include <QVector>
 #include <QString>
 #include <personnage.h>
+#include <QColorDialog>
 
 namespace Ui {
 class EnnemiesSet;
@@ -18,14 +19,28 @@ class EnnemiesSet : public QDialog
      */
 
 public:
-    explicit EnnemiesSet(Personnage &toSet,QVector <Personnage> presets,QWidget *parent = 0);
+    explicit EnnemiesSet(Personnage &toSet,QColor &toSetColor,QVector <Personnage> presets,QWidget *parent = 0);
     //~EnnemiesSet();
+
+private slots:
+    void on_addAttaqueCommandLinkButton_clicked();
+
+    void on_pushButton_2_clicked();
+
+    void on_setColorPushButton_clicked();
+
+    void on_pushButton_clicked();
+
+    void on_attaquesList_currentRowChanged(int currentRow);
 
 private:
     Ui::EnnemiesSet *ui;
     Personnage *m_toSet;
     QVector <Personnage> m_presets;
+    QColor *m_toSetColor;
     void updateGUI();
+    void updateAttaquesList();
+
 };
 
 #endif // ENNEMIESSET_H

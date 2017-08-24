@@ -11,6 +11,7 @@ int Personnage::setId()
 
 Personnage::Personnage(QObject *parent) : QObject(parent)
 {
+
     setId();
     m_vie = 100;
     m_vieMax = 100;
@@ -18,7 +19,7 @@ Personnage::Personnage(QObject *parent) : QObject(parent)
     m_mpMax = 50;
 	m_vieBuffer = 0;
 	m_mpBuffer = 0;
-	
+    m_heal = 0;
 
     //m_description = "Perso par défaut, pour les tests";
     m_nom = "Test";
@@ -35,23 +36,12 @@ Personnage::Personnage(QObject *parent) : QObject(parent)
     m_critiqueHit = 95;
     m_critHitBuffer = 0;//valeur négative en général
 
-    m_dodgeHit = 4;
+    m_dodgeHit = -44;
     m_dodgeHitBuffer = 0;//valeur négative en général
 	
 	m_absorption = 0.15;
 	m_absoptionBuffer = 0;
 	
-	//effects stats
-	//m_isOnFire = false;
-	m_fireTimer = 0;
-	//m_isPoisoned = false;
-	m_poisonTimer = 0;
-	//m_isFrozen = false;
-	m_frozenTimer = 0;
-	//m_isStuned = false;
-	m_stunTimer = 0;
-	m_isOnFire = m_isFrozen = m_isPoisoned = m_isStuned = false; //ça marche ça ?
-	m_isInDefenseState = false;
 
     QVector <int> effectsModifier;
     effectsModifier.push_back(0);
@@ -72,6 +62,7 @@ Personnage::Personnage(QObject *parent) : QObject(parent)
     luckEffects.push_back(0);
 
     m_degats = 1;
+    initializeClassicVariables();
 	
 	
 }
@@ -84,19 +75,19 @@ Personnage::Personnage(const Personnage &toCopy) : m_vie(toCopy.m_vie),m_mp(toCo
                                                    m_fireTimer(0),m_frozenTimer(0),m_poisonTimer(0),m_stunTimer(0),m_level(toCopy.m_level),m_isInDefenseState(false),m_isDeath(false),m_attaques(*new QVector <Attaque *> (toCopy.m_attaques))
 {
     setId();
+    initializeClassicVariables();
 }
 
 Personnage::Personnage(int vie, int vieMax, int mp, int mpMax, QString& nom,
                        int level, double defense, double critique,
                        double absorption, int critHit, int dodgeHit, QVector<Attaque*>& attaques, QObject *parent) : QObject(parent)
 {
+
     setId();
     m_vie = vie;
     m_vieMax = vieMax;
-    m_vieBuffer = 0;
     m_mp = mp;
     m_mpMax = mpMax;
-    m_mpBuffer = 0;
 
     m_nom = nom;
     //m_description = description;
@@ -110,21 +101,6 @@ Personnage::Personnage(int vie, int vieMax, int mp, int mpMax, QString& nom,
     m_critiqueBuffer = 0;
     m_dodgeHit = dodgeHit;
     m_critiqueHit = critHit;
-
-
-    m_isOnFire = m_isFrozen = m_isPoisoned = m_isStuned = false;
-    m_isDeath = false;
-    //effects stats
-    //m_isOnFire = false;
-    m_fireTimer = 0;
-    //m_isPoisoned = false;
-    m_poisonTimer = 0;
-    //m_isFrozen = false;
-    m_frozenTimer = 0;
-    //m_isStuned = false;
-    m_stunTimer = 0;
-    m_isOnFire = m_isFrozen = m_isPoisoned = m_isStuned = false; //ça marche ça ?
-    m_isInDefenseState = false;
 
     m_attaques = attaques;
     m_degats = 1;
@@ -140,8 +116,9 @@ Personnage::Personnage(int vie, int vieMax, int mp, int mpMax, QString& nom,
     blankEffectDouble.push_back(0);
     blankEffectDouble.push_back(0);
     blankEffectDouble.push_back(0);
+    initializeClassicVariables();
 
-    m_attaques.push_back(new Attaque (0,"Passer son tour",0,0,1,0,0,0,0,0,0,0,0,blankEffect,blankEffectDouble,blankEffect,9999,0,"Passer son tour"));
+    m_attaques.push_back(new Attaque (0,"Passer son tour",0,0,1,0,0,0,0,0,0,0,0,blankEffect,blankEffect,blankEffect,9999,0,"Passer son tour"));
 
 }
 
@@ -166,6 +143,7 @@ void Personnage::setVie(int newVie){
 
 Personnage::Personnage(QString path, QVector <Attaque*> attaques, QObject *parent) : QObject(parent) //constructeur à partir de fichier
 {
+
     setId();
     //pas de buffer d'HP ou de MP, donc initialisation normale
     QVector <QString> donnees = getFile(path);
@@ -212,34 +190,11 @@ Personnage::Personnage(QString path, QVector <Attaque*> attaques, QObject *paren
     int healBuffer = donnees[12].toInt();
     m_heal = healBuffer;
 
+    initializeClassicVariables();
+
     m_attaques = attaques;
 
-
-   //inchangé
-    m_isOnFire = m_isFrozen = m_isPoisoned = m_isStuned = false;
-    m_isDeath = false;
-    //effects stats
-    //m_isOnFire = false;
-    m_fireTimer = 0;
-    //m_isPoisoned = false;
-    m_poisonTimer = 0;
-    //m_isFrozen = false;
-    m_frozenTimer = 0;
-    //m_isStuned = false;
-    m_stunTimer = 0;
-    m_isOnFire = m_isFrozen = m_isPoisoned = m_isStuned = false; //ça marche ça ?
-    m_isInDefenseState = false;
-
-
-
-
     
-    //init des buffers classique
-    m_vieBuffer = 0;
-    m_mpBuffer = 0;
-    m_defenseBuffer = 0;
-    m_critiqueBuffer = 0;
-
 
 }
 
@@ -265,21 +220,6 @@ void Personnage::rewrite(int vie, int vieMax, int mp, int mpMax, QString nom, in
     m_dodgeHit = dodgeHit;
     m_critiqueHit = critHit;
 
-
-    m_isOnFire = m_isFrozen = m_isPoisoned = m_isStuned = false;
-    m_isDeath = false;
-    //effects stats
-    //m_isOnFire = false;
-    m_fireTimer = 0;
-    //m_isPoisoned = false;
-    m_poisonTimer = 0;
-    //m_isFrozen = false;
-    m_frozenTimer = 0;
-    //m_isStuned = false;
-    m_stunTimer = 0;
-    m_isOnFire = m_isFrozen = m_isPoisoned = m_isStuned = false; //ça marche ça ?
-    m_isInDefenseState = false;
-
     QVector <int> blankEffect;
     blankEffect.push_back(0);
     blankEffect.push_back(0);
@@ -292,7 +232,7 @@ void Personnage::rewrite(int vie, int vieMax, int mp, int mpMax, QString nom, in
     blankEffectDouble.push_back(0);
     blankEffectDouble.push_back(0);
 
-    m_attaques.push_back(new Attaque (0,"Passer son tour",0,0,1,0,0,0,0,0,0,0,0,blankEffect,blankEffectDouble,blankEffect,9999,0,"Passer son tour"));
+    m_attaques.push_back(new Attaque (0,"Passer son tour",0,0,1,0,0,0,0,0,0,0,0,blankEffect,blankEffect,blankEffect,9999,0,"Passer son tour"));
 
     int loop = 0;
     while (loop != attaques.count())
@@ -362,7 +302,8 @@ void Personnage::rewrite(QString path, QVector <Attaque*> attaques)
     blankEffectDouble.push_back(0);
     blankEffectDouble.push_back(0);
 
-    m_attaques.push_back(new Attaque (0,"Passer son tour",0,0,1,0,0,0,0,0,0,0,0,blankEffect,blankEffectDouble,blankEffect,9999,0,"Passer son tour"));
+    m_attaques.push_back(new Attaque (0,"Passer son tour",0,0,1,0,0,0,0,0,0,0,0,blankEffect,blankEffect
+                                      ,blankEffect,9999,0,"Passer son tour"));
 
     int loop = 0;
     while (loop != attaques.count())
@@ -506,6 +447,16 @@ double Personnage::getCritiqueBuffer()
 void Personnage::setDefense(double newDefense)
 {
     m_defense = newDefense;
+}
+
+void Personnage::setDefenseState(bool defenseState)
+{
+    m_isInDefenseState = defenseState;
+}
+
+bool Personnage::getDefenseState()
+{
+    return m_isInDefenseState;
 }
 
 double Personnage::getDefense()
@@ -830,35 +781,39 @@ double Personnage::getTotalAbso()
     return m_absorption + m_absoptionBuffer;
 }
 
-void Personnage::degat(int degatCount)
+QVector<QString> Personnage::degat(int degatCount)
 {
-    /* TODO :
-    -gestion de l'abso, de la défense
-    -Mort si vie < 0
-    */
+    QVector <QString> messages;
     int absoTotale = this->getTotalAbso();
-    degatCount = degatCount / absoTotale;
+    if (absoTotale > 0)
+    {
+        degatCount = degatCount / absoTotale;
+    }
 
     if (m_isInDefenseState == true)
     {
         int defenseTotale = this->getTotalDefense();
         degatCount = degatCount / defenseTotale;
     }
-    if (degatCount <= m_vie)
-    {
-        m_vie = m_vie - degatCount;
-    }
     if (degatCount > m_vie)
     {
         m_vie = 0;
     }
+
+    if (degatCount <= m_vie)
+    {
+        m_vie = m_vie - degatCount;
+    }
+
     if (m_vie == 0)
     {
         m_isDeath = true;
+        messages.push_back("<span style=\"color: #999900;\">" + this->getName() + " est mort.</span>");
+
     }
 
 
-    
+    return messages;
 
 }
 
@@ -895,26 +850,54 @@ void Personnage::putOnEffect(int effect, int turnCount) // version finale de la 
     bool* effectToggle = this->returnEffect(effect);
     int* effectTimer = this->returnEffectTimer(effect);
 
-    if (*effectTimer > 0)
-    {
-        *effectToggle = true;
-        if (*effectTimer < turnCount)
-        {
-           *effectTimer = turnCount;
-        }
-    }
+    *effectToggle = true;
+    if (turnCount >= *effectTimer)
+        *effectTimer = turnCount;
 }
 
-void Personnage::newTurn()
+QVector <QString> Personnage::newTurn()
 {
-    for (int loop = 1; loop == 4; loop++) //gestion des effets
+    QVector <QString> messages;
+    int loop = 1;
+    while (loop != 5) //gestion des effets
     {
         bool *effectToggle = this->returnEffect(loop);
         int *effectTimer = this->returnEffectTimer(loop);
+        //application des effets :
+        if (loop == 1 && m_isOnFire == true)//feu
+        {
+            if (m_fireTimerBuffer <= 0)
+            {
+                m_fireTimerBuffer == m_level;
+            }
+            m_vie = m_vie - m_fireTimerBuffer;
+            messages.push_back("<span style:\"color=Orange\">" + this->m_nom + " a subi " + QString::number(m_fireTimerBuffer) + " dégâts de feu</span>");
+            if (m_fireTimerBuffer > m_level)
+            {
+                m_fireTimerBuffer = m_fireTimerBuffer * 2;
+            }
+        }
+        if (loop == 3 && m_isPoisoned == true)//poison
+        {
+            if (m_poisonTimerBuffer == 0)
+            {
+                m_poisonTimerBuffer = m_level;
+            }
+            m_vie = m_vie - m_poisonTimerBuffer;
+            messages.push_back("<span style:\"color=#00cc00\">" + this->m_nom + " a subi " + QString::number(m_poisonTimerBuffer) + " dégâts de poison</span>");
+            if (m_poisonTimerBuffer >= m_level)
+            {
+                m_poisonTimerBuffer = m_poisonTimerBuffer * 2;
+            }
+        }
+        if (loop == 2 && m_isFrozen == true)
+            messages.push_back("<span style:\"color=#3399ff\">" + m_nom + " est gelé");
+        if(loop == 4 && m_isStuned == true)
+            messages.push_back("<span style:\"color=#ffff33\">" + m_nom + " est stun");
 
         if (*effectTimer > 0)
         {
-            *effectTimer =- *effectTimer;
+            *effectTimer = *effectTimer - 1;
         }
         if (*effectTimer == 0)
         {
@@ -925,7 +908,10 @@ void Personnage::newTurn()
         {
             *effectToggle = true;
         }
+        loop++;
     }
+    return messages;
+
 }
 
 void Personnage::endFight()
@@ -940,55 +926,79 @@ void Personnage::endFight()
     }
 }
 
-void Personnage::combat(Personnage &cible, Attaque *bonneAttaque)
+QVector<QString> Personnage::combat(Personnage &cible, Attaque *bonneAttaque)
 {
+    QVector <QString> messages;
     if (m_isDeath == false)
     {
 
 
-
-        int de = rand()% 50 + (-50);
-        int totalDodge = m_dodgeHit + m_dodgeHitBuffer;
-        if (de > totalDodge && m_mp >= bonneAttaque->getMpCost())//si pas dodge, MP suffisants,
+        int de = (-50) + (rand() % static_cast<int>(50 - (-50) + 1));
+        messages.push_back("Jet de dé. Résultat : " + QString::number(de));
+        int totalDodge = cible.getTotalDodgeHit();
+        if (de > totalDodge && m_mp >= bonneAttaque->getMpCost() && m_isStuned == false)//si pas dodge, MP suffisants,
         {
             double degats = (0.0);
             int degatAttaque = 0;
             degatAttaque = (bonneAttaque->getDegats());
             degats = static_cast <double> (degatAttaque);
-            degats = degats * (m_level * 1.031);
-            degats = degats * (de/1000);
+            degats = degats * m_level;
+            degats = degats * (1 + de/1000);
             degats = degats * m_degats;
             int totalCritique = m_critiqueHit;
-            totalCritique =- bonneAttaque->getCriticalModifier();
-            totalCritique =- m_critHitBuffer;
+            totalCritique =totalCritique- bonneAttaque->getCriticalModifier();
+            totalCritique =totalCritique- m_critHitBuffer;
             if (de > totalCritique)
             {
-                int degatsFinaux = static_cast <int> (degats);
                 degats = degats * bonneAttaque->getAttaqueCritModifier();
-                cible.degat(degatsFinaux);
+            }
+            QVector <QString> retourCible = cible.degat(static_cast <int> (degats));
+            messages.push_back("<span style=\"color:Blue;\">" + cible.getName() + " a reçu " + QString::number(static_cast <int> (degats)) + " dégâts.</span>");
+            int loop = 0;
+            while (loop != retourCible.count())
+            {
+                messages.push_back(retourCible[loop]);
+                loop++;
             }
             m_mp = m_mp - bonneAttaque->getMpCost();
 
             QVector <int> effects = bonneAttaque->getEffectsModifier();
-            QVector <double> effectsLuck = bonneAttaque->getEffectsLuck();
+            QVector <int> effectsLuck = bonneAttaque->getEffectsLuck();
 
-            int deEffects = rand() % 100 + 1;
-            if (effects[0] > 0 && effectsLuck[0] * 100 >= deEffects)
+            if (bonneAttaque->isInitialized() == false)
             {
-                cible.putOnEffect(1, effects[0]);
+                int deEffects = rand() % 100 + 1;
+                if (effects[0] > 0 && effectsLuck[0] >= deEffects)
+                {
+                    cible.putOnEffect(1, effects[0]);
+                    messages.push_back("<span style=\"color:Green;\">" + cible.getName() + " a été mis en feu pour " + QString::number(cible.getTimer(1)) + "tour(s) !</span>");
+                }
+                if (effects[1] > 0 && effectsLuck[1] >= deEffects)
+                {
+                    cible.putOnEffect(2, effects[1]);
+                    messages.push_back("<span style=\"color:Green;\">" + cible.getName() + " a été glacé pour " + QString::number(cible.getTimer(2)) + "tour(s) !</span>");
+                }
+                if (effects[2] > 0 && effectsLuck[2] >= deEffects)
+                {
+                    cible.putOnEffect(3, effects[2]);
+                    messages.push_back("<span style=\"color:Green;\">" + cible.getName() + " a été empoisonné pour " + QString::number(cible.getTimer(3)) + "tour(s) !</span>");
+                }
+                if (effects[3] > 0 && effectsLuck[3] >= deEffects)
+                {
+                    cible.putOnEffect(4, effects[3]);
+                    messages.push_back("<span style=\"color:Green;\">" + cible.getName() + " a été stun pour " + QString::number(cible.getTimer(4)) + "tour(s) !</span>");
+                }
             }
-            if (effects[1] > 0 && effectsLuck[1] * 100 >= deEffects)
-            {
-                cible.putOnEffect(2, effects[1]);
-            }
-            if (effects[2] > 0 && effectsLuck[2] * 100 >= deEffects)
-            {
-                cible.putOnEffect(3, effects[2]);
-            }
-            if (effects[3] > 0 && effectsLuck[3] * 100 >= deEffects)
-            {
-                cible.putOnEffect(4, effects[3]);
-            }
+
+        }
+        else
+        {
+            if (de <= totalDodge)
+                messages.push_back("<span style=\"color:Orange;\">L'adversaire dodge !</span>");
+            if (m_mp < bonneAttaque->getMpCost())
+                messages.push_back("<strong style=\"color:Red;\">Plus de mana !</strong>");
+            if (m_isStuned == true)
+                messages.push_back("<strong style=\"color:Red;\">L'attaquant est assommé ! Il ne peux pas attaquer !</strong>");
 
         }
 
@@ -1014,6 +1024,7 @@ void Personnage::combat(Personnage &cible, Attaque *bonneAttaque)
             }
         }
     }
+    return messages;
 }
 
 void Personnage::setAbso(double newAbso)
@@ -1061,4 +1072,33 @@ Personnage::~Personnage()
 void Personnage::setAttaque(QVector<Attaque *> newAttaques)
 {
     m_attaques = newAttaques;
+}
+
+int Personnage::getTotalDodgeHit()
+{
+    return m_dodgeHit + m_dodgeHitBuffer;
+}
+
+void Personnage::initializeClassicVariables()
+{
+    //effects stats
+    //m_isOnFire = false;
+    m_fireTimer = 0;
+    m_fireTimerBuffer = 0;
+    //m_isPoisoned = false;
+    m_poisonTimer = 0;
+    m_poisonTimerBuffer = 0;
+    //m_isFrozen = false;
+    m_frozenTimer = 0;
+    //m_isStuned = false;
+    m_stunTimer = 0;
+    m_isOnFire = m_isFrozen = m_isPoisoned = m_isStuned = false; //ça marche ça ?
+    m_isInDefenseState = false;
+
+    m_vieBuffer = 0;
+    m_mpBuffer = 0;
+    m_defenseBuffer = 0;
+    m_critiqueBuffer = 0;
+    m_dodgeHitBuffer = 0;
+
 }

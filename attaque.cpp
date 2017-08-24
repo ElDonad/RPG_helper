@@ -26,12 +26,14 @@ Attaque::Attaque()
     m_permanentEffectModifier.push_back(0);
     m_permanentEffectModifier.push_back(0);
     m_permanentEffectModifier.push_back(0);
+    m_isInitialized = false;
 
 }
 
 Attaque::Attaque(QVector <QString> saveVector)
 {
     bool ok = false; //attention, il faut remplacer tous les toInt() par des toInt(&ok, 10)
+    m_isInitialized = false;
     int degats = saveVector[0].toInt();
     m_degats = degats;
 
@@ -116,7 +118,7 @@ Attaque::Attaque(int degats,
                  int critHitModifier,
                  double critAttaqueModifier,
                  QVector<int> effectsModifier,
-                 QVector <double> effectsLuck,
+                 QVector<int> effectsLuck,
                  QVector<int> permanentEffectsModifier,
                  int attaqueId,
                  int level,
@@ -141,6 +143,7 @@ Attaque::Attaque(int degats,
     m_attaqueId = attaqueId;
     m_level = level;
     m_description = description;
+    m_isInitialized = false;
 }
 
 int Attaque::returnEffectModifier(int effect)
@@ -236,7 +239,7 @@ int Attaque::getId()
     return m_attaqueId;
 }
 
-QVector <double> Attaque::getEffectsLuck()
+QVector <int> Attaque::getEffectsLuck()
 {
     return m_effectsLuck;
 }
@@ -259,5 +262,20 @@ void Attaque::supActions()
 void Attaque::onSelected()
 {
 
+}
+
+void Attaque::newTurn()
+{
+    m_persistence--;
+}
+
+void Attaque::initialize()
+{
+    m_isInitialized = true;
+}
+
+bool Attaque::isInitialized()
+{
+    return m_isInitialized;
 }
 

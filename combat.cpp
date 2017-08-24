@@ -10,6 +10,7 @@ Combat::Combat(QVector<Heros *> &personnages, QWidget *parent) :
     //ui->ennemisCount->setText("0");
     m_personnages = personnages;
     this->updateGUI();
+    ui->toolButton->hide();
 }
 
 Combat::~Combat()
@@ -74,7 +75,8 @@ void Combat::updateGUI()
 
     //mettre à jour les tables d'attaque et d'ennemis
     this->updateEnnemisList();
-    loop = ui->attaquesTableWidget->rowCount();
+    ui->attaquesTableWidget->setRowCount(0);
+    loop = 0;
     while (loop != m_attaquants.count())
     {
         ui->attaquesTableWidget->setRowCount(ui->attaquesTableWidget->rowCount() + 1);
@@ -249,10 +251,11 @@ void Combat::on_ennemyTable_doubleClicked(const QModelIndex &index)
         blankEffectDouble.push_back(0);
         blankEffectDouble.push_back(0);
         QVector <Attaque *> selectedAttaque = m_mechants[ui->ennemyTable->currentRow()]->getAttaques();
-        selectedAttaque.push_back(new Attaque (0,"Passer son tour",0,0,1,0,0,0,0,0,0,0,0,blankEffect,blankEffectDouble,blankEffect,9999,0,"Passer son tour"));
+        selectedAttaque.push_back(new Attaque (0,"Passer son tour",0,0,1,0,0,0,0,0,0,0,0,blankEffect,blankEffect,blankEffect,9999,0,"Passer son tour"));
         m_mechants[ui->ennemyTable->currentRow()]->setAttaque(selectedAttaque);
-    clicked(m_mechants[ui->ennemyTable->currentRow()]);
+
     }
+    clicked(m_mechants[ui->ennemyTable->currentRow()]);
 }
 
 void Combat::on_deleteButton_clicked()
@@ -303,5 +306,152 @@ void Combat::beforeRemovingEnnemy(Personnage *toRemove)
 
 void Combat::on_editButton_clicked()
 {
+    EnnemiesSet ennemySet (*m_mechants[ui->ennemyTable->currentRow()],m_ennemiesColor[ui->ennemyTable->currentRow()],m_presets);
+    ennemySet.exec();
+    this->updateGUI();
+    this->updateEnnemisList();
+    ui->ennemyTable->setItem(ui->ennemyTable->currentRow(),0,new QTableWidgetItem(m_mechants[ui->ennemyTable->currentRow()]->getName()));
+    this->updateGUI();
+}
 
+void Combat::on_pushButton_clicked()//fin de tour
+{
+    Briefing *endTurn = new Briefing (m_attaquants,m_ciblesAttaque,m_turnAttaques);
+    endTurn->exec();
+    //fins de tour
+    ui->endTurnTextEdit->setVisible(true);
+    ui->clearButton->setVisible(true);
+    ui->endTurnLabel->setVisible(true);
+    //1.décrémenter les effets de tous les personnages et les supprimer au besoin
+    QVector <QString> messages;
+    //on commence par les héros
+    int loop = 0;
+    while (loop != m_personnages.count())
+    {
+        int loop2 = 0;
+        QVector<QString> buffer = m_personnages[loop]->newTurn();
+        while (loop2 != buffer.count())
+        {
+            messages.push_back(buffer[loop]);
+            loop2++;
+        }
+        loop++;
+    }
+    splash(messages);
+    messages.clear();
+    //ensuite les ennemis
+    loop = 0;
+    while (loop != m_mechants.count())
+    {
+        QVector<QString> buffer = m_mechants[loop]->newTurn();
+        int loop2 = 0;
+        while (loop2 != buffer.count())
+        {
+            messages.push_back(buffer[loop]);
+            loop2++;
+        }
+        loop++;
+
+    }
+    splash(messages);
+    messages.clear();
+
+    //gestion persistence des attaques :
+    loop = 0;
+    while (loop != m_turnAttaques.count())
+    {
+        m_turnAttaques[loop]->newTurn();
+        if(m_turnAttaques[loop]->getPersistence() <= 0)
+        {
+            m_turnAttaques.erase(m_turnAttaques.begin() + loop);
+            m_ciblesAttaque.erase(m_ciblesAttaque.begin() + loop);
+            m_attaquants.erase(m_attaquants.begin() + loop);
+            loop--;
+        }
+        loop++;
+    }
+    ui->endTurnTextEdit->insertHtml("<strong><span style=\"text-decoration: underline;\"><span style=\"color: #ff9900;\">FIN DU TOUR !</span></span></strong>");
+    this->updateGUI();
+
+
+}
+
+
+
+void Combat::on_bourrinInfos_clicked()
+{
+    InfosPersos *infos = new InfosPersos(m_personnages[0]);
+    infos->exec();
+}
+
+
+void Combat::on_mageInfos_clicked()
+{
+    InfosPersos *infos = new InfosPersos(m_personnages[1]);
+    infos->exec();
+}
+
+void Combat::on_chamanInfos_clicked()
+{
+    InfosPersos *infos = new InfosPersos(m_personnages[2]);
+    infos->exec();
+}
+
+void Combat::on_assassinInfos_clicked()
+{
+    InfosPersos *infos = new InfosPersos(m_personnages[3]);
+    infos->exec();
+}
+
+void Combat::on_ArcherInfos_clicked()
+{
+    InfosPersos *infos = new InfosPersos(m_personnages[4]);
+    infos->exec();
+}
+
+void Combat::on_healerInfos_clicked()
+{
+    InfosPersos *infos = new InfosPersos(m_personnages[5]);
+    infos->exec();
+}
+
+void Combat::on_infos_clicked()
+{
+    InfosPersos *infos = new InfosPersos(m_mechants[ui->ennemyTable->currentRow()]);
+    infos->exec();
+    this->updateGUI();
+}
+
+void Combat::on_toolButton_clicked()//rien
+{
+
+}
+
+void Combat::on_clearButton_clicked()
+{
+    ui->endTurnTextEdit->setVisible(false);
+    ui->clearButton->setVisible(false);
+    ui->endTurnLabel->setVisible(false);
+    ui->endTurnTextEdit->clear();
+}
+
+QVector<QString> Combat::addQVector(QVector<QString> base, QVector<QString> aAjouter)
+{
+    int loop = 0;
+    while (loop != aAjouter.count())
+    {
+        base.push_back(aAjouter[loop]);
+        loop++;
+    }
+    return base;
+}
+
+void Combat::splash(QVector<QString> toDisplay)
+{
+    int loop = 0;
+    while (loop != toDisplay.count())
+    {
+        ui->endTurnTextEdit->insertHtml(toDisplay[loop] + "<br />");
+        loop++;
+    }
 }
