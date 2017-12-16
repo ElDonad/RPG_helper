@@ -22,9 +22,9 @@ setAttaque::setAttaque(Personnage *attaquant, QVector<Personnage *> &ennemis, QV
     int loopAttaques = 0;
     while (m_attaquant->getAttaques().count() != loopAttaques)
     {
-        qDebug()<<"getAttaques.count : "<<m_attaquant->getAttaques().count();
-        qDebug()<<"nombre cellules : "<< ui->attaquesTableWidget->rowCount() - 1;
-        qDebug()<<"Nom première attaque : "<<m_attaquant->getAttaques()[0]->getName();
+//        qDebug()<<"getAttaques.count : "<<m_attaquant->getAttaques().count();
+//        qDebug()<<"nombre cellules : "<< ui->attaquesTableWidget->rowCount() - 1;
+//        qDebug()<<"Nom première attaque : "<<m_attaquant->getAttaques()[0]->getName();
         if (m_attaquant->getAttaques().count() > ui->attaquesTableWidget->rowCount())
         {
             QVector <Attaque*> attaqueBuffer2 = m_attaquant->getAttaques();
@@ -92,7 +92,7 @@ void setAttaque::on_pushButton_clicked()
        loop++;
     }
     m_ciblesAttaque->push_back(ciblesAttaque);
-
+    qDebug()<<"traitement de setAttaque terminé";
     this->setVisible(false);
 }
 

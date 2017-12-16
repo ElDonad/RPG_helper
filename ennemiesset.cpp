@@ -3,15 +3,23 @@
 
 extern int ATTAQUES_ID = 12001;
 
-EnnemiesSet::EnnemiesSet(Personnage &toSet, QColor &toSetColor, QVector<Personnage> presets, QWidget *parent) :
+EnnemiesSet::EnnemiesSet(Personnage &toSet, QColor &toSetColor, RenderType renderType,  QVector<Personnage> *presets, QVector<QColor> *presetsColor, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::EnnemiesSet)
 {
     ui->setupUi(this);
     m_toSet = &toSet;
     m_presets = presets;
+    m_presetsColor = presetsColor;
     m_toSetColor = &toSetColor;
+    m_renderType = renderType;
     this->updateGUI();
+
+    if (renderType == PresetSelection)
+    {
+        ui->presetsListWidget->hide();
+    }
+
 }
 
 void EnnemiesSet::updateGUI()
@@ -29,6 +37,16 @@ void EnnemiesSet::updateGUI()
     palette->setColor(QPalette::Base, *m_toSetColor);
     ui->colorLineEdit->setPalette(*palette);
     updateAttaquesList();
+    if (m_renderType == PlainSelection)//updating presets list
+    {
+        int loop = 0;
+        while (loop != m_presets->count())
+        {
+            ui->presetsListWidget->clear();
+            ui->presetsListWidget->addItem(m_presets->operator [](loop).getName());
+            loop++;
+        }
+    }
 }
 
 void EnnemiesSet::updateAttaquesList()
@@ -75,7 +93,7 @@ void EnnemiesSet::on_addAttaqueCommandLinkButton_clicked()
     blank.push_back(0);
     blank.push_back(0);
 
-    attaques.push_back(new Attaque(ui->attaqueDegatsSpinBox->value(), ui->attaqueNameLineEdit->text(), ui->attaqueHealSpinBox->value(),ui->attaqueMpCostSpinBox->value(),ui->attaquePersistenceSpinBox->value(),
+    attaques.push_back(new Attaque(m_toSet,ui->attaqueDegatsSpinBox->value(), ui->attaqueNameLineEdit->text(), ui->attaqueHealSpinBox->value(),ui->attaqueMpCostSpinBox->value(),ui->attaquePersistenceSpinBox->value(),
                                    ui->attaqueChargeSpinBox->value(),ui->attaqueDegatsModifierDoubleSpinBox->value(),ui->attaqueArmureModifierDoubleSpinBox->value(),
                                    ui->attaqueMpCostModifierDoubleSpinBox->value(),ui->attaqueAbsoModifierDoubleSpinBox->value(),ui->attaqueDodgeHitModifierSpinBox->value(),
                                    ui->attaqueCritHitModifierSpinBox->value(),ui->attaqueCritModifierSpinBox->value(),effects,effectsLuck,blank,ATTAQUES_ID,0));
@@ -113,5 +131,19 @@ void EnnemiesSet::on_pushButton_clicked()//c'est le bouton supprimer
 
 void EnnemiesSet::on_attaquesList_currentRowChanged(int currentRow)
 {
+
+}
+
+void EnnemiesSet::updateColor()
+{
+    QPalette *palette = new QPalette ();
+    palette->setColor(QPalette::Base, *m_toSetColor);
+    ui->colorLineEdit->setPalette(*palette);
+}
+
+void EnnemiesSet::on_presetsListWidget_itemClicked(QListWidgetItem *item)
+{
+    /**m_toSet->operator =( m_presets->operator [](ui->presetsListWidget->currentRow()));
+    this->updateGUI();*/
 
 }

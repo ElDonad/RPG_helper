@@ -5,6 +5,7 @@
 #include <QFile>
 #include <QString>
 #include <QVector>
+#include <QDir>
 
 //car je n'arrive pas à me servir des QFiles
 
@@ -19,5 +20,5 @@ QVector <QString> getFile (QString path);
 
 bool toBool(QString newBool);
 QString convertNormalPathIntoProtected(QString path);
-
+QVector<QString> cutToEndMark(QVector <QString> toCutQVector, QString endMark);
 #endif // SAVETOOLS_H

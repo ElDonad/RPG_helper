@@ -121,3 +121,15 @@ QString convertNormalPathIntoProtected(QString path)
     return path;
 }
 
+QVector <QString> cutToEndMark(QVector <QString> toCutQVector,QString endMark)
+{
+    int toCut = 0;
+    while (toCutQVector[toCut] != endMark || toCut != toCutQVector.count())
+        toCut++;
+
+    toCutQVector.remove(0,toCut);
+    return toCutQVector;
+}
+
+
+

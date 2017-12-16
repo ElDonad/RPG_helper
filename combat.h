@@ -27,7 +27,7 @@ class Combat : public QWidget
     Q_OBJECT
 
 public:
-    explicit Combat(QVector <Heros*> &personnages, QWidget *parent = 0);
+    explicit Combat(QVector <Heros*> &personnages,QVector <Personnage> *presets, QVector <QColor> *presetsColor,QWidget *parent = 0);
     ~Combat();
     void updateGUI();
     void updateEnnemisList();
@@ -70,15 +70,17 @@ private slots:
 
     void on_clearButton_clicked();
 
+    void on_PresetsButton_clicked();
+
 private:
     Ui::Combat *ui;
     QVector <Heros*> m_personnages;
     QVector <Personnage*> m_mechants;
     QVector <Attaque*> m_turnAttaques; //les attaques sélectionnées
     QVector <QVector <Personnage*>> m_ciblesAttaque; //voir setattaque.h
-    QVector <Personnage*> m_attaquants;
     QVector <QColor> m_ennemiesColor;
-    QVector <Personnage> m_presets;
+    QVector <Personnage> *m_presets;
+    QVector <QColor> *m_presetsColor;
 
     void clicked (Personnage *traite);
     void beforeRemovingEnnemy(Personnage *toRemove);

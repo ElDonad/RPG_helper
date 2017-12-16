@@ -7,6 +7,7 @@
 #include <personnage.h>
 #include <attaque.h>
 #include <savetools.h>
+#include <QDebug>
 
 namespace Ui {
 class Briefing;
@@ -17,12 +18,11 @@ class Briefing : public QDialog
     Q_OBJECT
 
 public:
-    explicit Briefing(QVector <Personnage*> &attaquants,QVector <QVector <Personnage*>>&ciblesAttaque,QVector <Attaque*> &attaquesSelected,QWidget *parent = 0);
+    explicit Briefing(QVector <QVector <Personnage*>>&ciblesAttaque,QVector <Attaque*> &attaquesSelected,QWidget *parent = 0);
     ~Briefing();
 
 private:
     Ui::Briefing *ui;
-    QVector <Personnage*> m_attaquants;
     QVector <QVector <Personnage*>> m_cibles;
     QVector <Attaque*> m_attaques;
     void bakeTurn();

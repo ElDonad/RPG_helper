@@ -21,7 +21,7 @@ public:
                         QVector <Personnage*> &ennemis,
                         QVector <Heros*> &personnages,
                         QVector <Attaque*> &attaquesBuffer,
-                        QVector <QVector<Personnage*>> &ciblesAttaque,
+                        QVector <QVector <Personnage*>> &ciblesAttaque,
                         QWidget *parent = 0);
     ~setAttaque();
 
@@ -42,9 +42,9 @@ private:
     QVector <Heros*> m_personnages;
     QVector <Personnage*> m_ennemis;
     QVector <Attaque*> *m_attaquesBuffer;
-    QVector <QVector<Personnage*>> *m_ciblesAttaque;
     QVector <int> m_rowSelectedHeros;
     QVector <int> m_rowSelectedMechants;
+    QVector<QVector<Personnage*>> *m_ciblesAttaque;
 
     QVector <Attaque*> m_attaqueAffichee;
 

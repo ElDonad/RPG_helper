@@ -2,14 +2,17 @@
 #define ATTAQUE_H
 
 #include <QVector>
+//#include <personnage.h>
 
+class Personnage;
 
 class Attaque
 {
 public:
     Attaque();
     Attaque(QVector <QString> saveVector);
-    Attaque(int degats,
+    Attaque(Personnage *parent,
+            int degats,
             QString nom,
             double heal,
             int mpCost,
@@ -29,11 +32,21 @@ public:
             int level,
             QString description = "Aucune description");
     
-
-private :
-    virtual void supActions();//actions supplémentaires.
-
+    virtual QVector<QString> supActions();//actions supplémentaires.
+    Personnage *m_parent;
+    virtual QVector<QString> attaque(Personnage* cible);
     virtual void onSelected();//méthode devant être appelée quand l'attaque est sélectionnée dans le tableau des attaques
+
+    //La classe attaque est de base divisée en plusieurs sous-modules modifiables à volonté.
+    //Ces modules listés en dessous renvoient tous un tableau des messages qu'ils retournent.
+    //
+    //Les subdivisions de la classe attaque :
+    //- basicAttaque s'occupe de faire du dégât et de retirer les points de mana
+private :
+    virtual QVector <QString> basicAttaque(Personnage *cible);
+    virtual QVector <QString> healAttaque(Personnage *cible);
+    virtual QVector <QString> effects(Personnage *cible);
+
 
     QString m_description;
     int m_attaqueId;
@@ -77,6 +90,7 @@ public :
 
     //acesseurs
     int getLevel();
+    QVector <QString> save();
     int getDegats();//fait
     double getHeal();//fait
     int getMpCost();//fait
@@ -96,6 +110,8 @@ public :
 
     //utilitaires supplémentaires
     int getTotalPersistence();//fait
+    //classe du schnaps pour fusionner deux vecteurs de QString
+    void mergeQVector(QVector<QString> *toMerge, QVector<QString> toMergeWith);
     //QVector <QString> returnSaveVector();
     void newTurn();
 

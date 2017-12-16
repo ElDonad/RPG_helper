@@ -16,7 +16,7 @@ class Heros : public Personnage
 
 public:
     Heros();
-    Heros(QString path, QVector<Attaque *> attaques);
+    Heros(QVector<QString> path, QVector<Attaque *> attaques);
 
 private :
     int pvTableau[];

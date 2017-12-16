@@ -8,6 +8,7 @@
 #include <QFile>
 #include <iostream>
 #include <stdlib.h>
+#include <QVector>
 
 #include <savetools.h>
 #include <attaque.h>
@@ -21,23 +22,34 @@ class Personnage : public QObject
 {
     Q_OBJECT
 public:
+    typedef enum
+    {
+        ClassicSave,//sans les attaques
+        CompleteSave,//avec les attaques
+        CompleteSaveAndEndMark
+
+    }Save;
+
     explicit Personnage(QObject *parent = 0); //fait
     explicit Personnage(int vie, int vieMax, int mp, int mpMax, QString &nom,
                         int level, double defense, double critique, double absorption, int critHit, int dodgeHit, QVector<Attaque*>& attaques, QObject *parent); //fait
-    explicit Personnage(QString path,  QVector<Attaque*> attaques, QObject *parent = 0);//fait
+    explicit Personnage(QVector <QString> newDonnees, QObject *parent = 0);//pour les chargements avec attaques
+    explicit Personnage(QVector <QString> newDonnees,  QVector <Attaque*> attaques, QObject *parent = 0);//fait
     explicit Personnage(Personnage const& toCopy);
 
     void rewrite(int vie, int vieMax, int mp, int mpMax, QString nom,
                  int level, double defense, double critique, double absorption, int critHit, int dodgeHit, QVector<Attaque *> &attaques);
-    void rewrite(QString path, QVector<Attaque*> attaques);
+    void rewrite(QVector <QString> newDonnees, QVector<Attaque*> attaques);
+    void rewrite(QVector <QString> newDonnees);
 
     ~Personnage();
 
     bool equal(Personnage const& b) const;
-    QVector <QString> combat(Personnage &cible, Attaque *bonneAttaque);//fait
+    //QVector <QString> combat(Personnage &cible, Attaque *bonneAttaque);//fait
 
     void setVie(int newVie); //fait
     int getVie(); //fait
+    bool is_death();
 
     void setMp(int newMp); //fait
     int getMp(); //fait
@@ -88,7 +100,9 @@ public:
     int getTotalDodgeHit();
 
     double getDegats();
-    void setDegats();
+    double getDegatsBuffer();
+    void setDegats(double degats);
+    void setDegatsBuffer(double degatsBuffer);
 
     double getHeal();
     void setHeal();
@@ -131,7 +145,7 @@ public:
     int getTimer (int effectTimer);
 
 
-    void save(QString filePath);
+    QVector<QString> save(Save saveWay);
 
     //pour les textes affichés
     QString returnVieSurVieMax();

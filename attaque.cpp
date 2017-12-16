@@ -1,4 +1,5 @@
 #include "attaque.h"
+#include "personnage.h"
 
 Attaque::Attaque()
 {
@@ -104,7 +105,8 @@ Attaque::Attaque(QVector <QString> saveVector)
 
 }
 
-Attaque::Attaque(int degats,
+Attaque::Attaque(Personnage* parent,
+                 int degats,
                  QString nom,
                  double heal,
                  int mpCost,
@@ -124,6 +126,7 @@ Attaque::Attaque(int degats,
                  int level,
                  QString description)
 {
+    m_parent = parent;
     m_degats = degats;
     m_heal = heal;
     m_nom = nom;
@@ -254,16 +257,6 @@ int Attaque::getLevel()
     return m_level;
 }
 
-void Attaque::supActions()
-{
-
-}
-
-void Attaque::onSelected()
-{
-
-}
-
 void Attaque::newTurn()
 {
     m_persistence--;
@@ -279,3 +272,132 @@ bool Attaque::isInitialized()
     return m_isInitialized;
 }
 
+QVector <QString> Attaque::save()
+{
+    QVector<QString> save;
+
+    save.push_back(QString::number(m_degats));
+    save.push_back(m_nom);
+    save.push_back(QString::number(m_heal));
+    save.push_back(QString::number(m_mpCost));
+    save.push_back(QString::number(m_persistence));
+    save.push_back(QString::number(m_degatsModifier));
+    save.push_back(QString::number(m_armureModifier));
+    save.push_back(QString::number(m_mpCostModifier));
+    save.push_back(QString::number(m_absoModifier));
+    save.push_back(QString::number(m_dodgeModifier));
+    save.push_back(QString::number(m_criticalModifier));
+    save.push_back(QString::number(m_attaqueCritModifier));
+
+    int loop = 0;
+    while (loop != 4)
+    {
+        save.push_back(QString::number(m_effectsModifier[loop]));
+        save.push_back(QString::number(m_effectsLuck[loop]));
+        loop++;
+    }
+    save.push_back(QString::number(m_charge));
+    save.push_back(QString::number(m_attaqueId));
+    //en tout, 22 lignes de save
+}
+
+void Attaque::onSelected()
+{
+    return;
+}
+
+QVector<QString> Attaque::supActions()
+{
+    QVector<QString> messages;
+    return messages;
+}
+
+QVector<QString> Attaque::attaque(Personnage *cible)
+{
+    QVector <QString> messages;
+    if (m_parent->is_death() == false)
+    {
+        Attaque::mergeQVector(&messages, Attaque::basicAttaque(cible));
+    }
+    return messages;
+}
+
+QVector <QString> Attaque::basicAttaque(Personnage *cible)
+{
+    QVector <QString> messages;
+    int de = (-50) + (rand() % static_cast<int>(50 - (-50) + 1));
+    messages.push_back("Jet de dé. Résultat : " + QString::number(de));
+    int totalDodge = cible->getTotalDodgeHit();
+    if (de > totalDodge && m_parent->getMp() >= m_mpCost && m_parent->getEffect(4) == false)
+    {
+        double degats = static_cast <double> (m_degats);
+        degats = degats * m_parent->getLevel();
+        degats = degats * (1 + de/1000);
+        degats = degats * (m_parent->getDegats() + m_parent->getDegatsBuffer());
+        int totalCritique = m_parent->getTotalCriticalHit() + m_criticalModifier;
+        if (de > totalCritique)
+        {
+            degats = degats * m_criticalModifier;
+            messages.push_back("<span style=\"color: #993366;\">Coup critique !</span>");
+        }
+        QVector <QString> retourCible = cible->degat(static_cast <int> (degats));
+        messages.push_back("<span style=\"color:Blue;\">" + cible->getName() + " a reçu " + QString::number(static_cast <int> (degats)) + " dégâts.</span>");
+        int loop = 0;
+        while (loop != retourCible.count())
+        {
+            messages.push_back(retourCible[loop]);
+            loop++;
+        }
+        m_parent->setMp(m_parent->getMp() - m_mpCost);
+        mergeQVector(&messages, this->healAttaque(cible));
+        mergeQVector(&messages, this->effects(cible));
+
+    }
+    return messages;
+}
+
+void Attaque::mergeQVector(QVector <QString> *toMerge,QVector <QString> toMergeWith)
+{
+    int a = 0;
+    while (a < toMergeWith.size())
+    {
+        toMerge->push_back(toMergeWith[a]);
+        a++;
+    }
+}
+
+QVector<QString> Attaque::effects(Personnage *cible)
+{
+    QVector <QString> messages;
+    for (int i = 0; i == 3; i++)
+    {
+        if (m_effectsModifier[i] > 0)
+            cible->putOnEffect(i + 1, m_effectsModifier[i]);
+        switch (i)
+        {
+            case 0:
+                messages.push_back("<span style=\"color:Green;\">" + cible->getName() + " a été mis en feu pour " + QString::number(cible->getTimer(1)) + "tour(s) !</span>");
+            break;
+            case 1:
+                messages.push_back("<span style=\"color:Green;\">" + cible->getName() + " a été glacé pour " + QString::number(cible->getTimer(2)) + "tour(s) !</span>");
+            break;
+            case 2:
+                messages.push_back("<span style=\"color:Green;\">" + cible->getName() + " a été empoisonné pour " + QString::number(cible->getTimer(3)) + "tour(s) !</span>");
+            break;
+            case 3:
+                messages.push_back("<span style=\"color:Green;\">" + cible->getName() + " a été stun pour " + QString::number(cible->getTimer(4)) + "tour(s) !</span>");
+            break;
+        }
+    }
+    return messages;
+
+}
+
+QVector<QString> Attaque::healAttaque(Personnage *cible)
+{
+    QVector<QString> messages;
+    cible->setVie(cible->getVie() + m_heal);
+    if (m_heal > 0)
+        messages.push_back("<span style=\"color:Blue;\">" + cible->getName() + " a été healé à hauteur de " + QString::number(m_heal) + "PV ! Sa vie est maintenant de " + cible->getVie() + " PV.</span>");
+    return messages;
+}

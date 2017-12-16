@@ -2,7 +2,7 @@
 #include "ui_combat.h"
 
 
-Combat::Combat(QVector<Heros *> &personnages, QWidget *parent) :
+Combat::Combat(QVector<Heros *> &personnages, QVector<Personnage> *presets, QVector<QColor> *presetsColor, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Combat)
 {
@@ -11,6 +11,8 @@ Combat::Combat(QVector<Heros *> &personnages, QWidget *parent) :
     m_personnages = personnages;
     this->updateGUI();
     ui->toolButton->hide();
+    m_presets = presets;
+    m_presetsColor = presetsColor;
 }
 
 Combat::~Combat()
@@ -27,9 +29,9 @@ void Combat::updateGUI()
 
     //afficher warning si jamais personnage attaque
     int loop = 0;
-    while (loop != m_attaquants.count())
+    while (loop != m_turnAttaques.count())
     {
-        QString name = m_attaquants[loop]->getName();
+        QString name = m_turnAttaques[loop]->m_parent->getName();
 
         ui->warningBourrin->setEnabled(false);
         ui->warningAssassin->setEnabled(false);
@@ -77,10 +79,10 @@ void Combat::updateGUI()
     this->updateEnnemisList();
     ui->attaquesTableWidget->setRowCount(0);
     loop = 0;
-    while (loop != m_attaquants.count())
+    while (loop != m_turnAttaques.count())
     {
         ui->attaquesTableWidget->setRowCount(ui->attaquesTableWidget->rowCount() + 1);
-        ui->attaquesTableWidget->setItem(ui->attaquesTableWidget->rowCount() - 1,0, new QTableWidgetItem(m_attaquants[loop]->getName()));
+        ui->attaquesTableWidget->setItem(ui->attaquesTableWidget->rowCount() - 1,0, new QTableWidgetItem(m_turnAttaques[loop]->m_parent->getName()));
         ui->attaquesTableWidget->setItem(ui->attaquesTableWidget->rowCount() - 1,1,new QTableWidgetItem(m_turnAttaques[loop]->getName()));
         loop++;
     }
@@ -107,6 +109,7 @@ void Combat::updateEnnemisList()
             if (ui->ennemyCount->value() > ui->ennemyTable->rowCount())
             {
                 m_mechants.push_back(new Personnage ());
+                qDebug()<<m_mechants.last()->getName();
                 m_ennemiesColor.push_back(QColor("#FFFFFF"));
                 ui->ennemyTable->setRowCount(ui->ennemyTable->rowCount() + 1);
                 ui->ennemyTable->setItem(ui->ennemyTable->rowCount() - 1, 0, new QTableWidgetItem(m_mechants[ui->ennemyTable->rowCount() - 1]->getName()));
@@ -176,39 +179,14 @@ void Combat::on_bourrinAttaque_clicked()
 
 }
 
-void Combat::clicked(Personnage *traite)
+void Combat::clicked(Personnage *traite)//à vérifier plus tard
 {
     setAttaque *bourrinSetAttaque = new setAttaque(dynamic_cast <Personnage*> (traite),m_mechants,m_personnages, m_turnAttaques, m_ciblesAttaque);
     bourrinSetAttaque->exec();
     bourrinSetAttaque->close();
     delete bourrinSetAttaque;
-    m_attaquants.push_back(traite);
     //DEBUG : vérifier m_turnAttaques
 
-    //cette partie
-    if (m_ciblesAttaque.count() < m_attaquants.count())
-    {
-        QVector <Personnage*> blankPerso;
-        QVector <QVector <Personnage*>> blankTablePerso;
-        blankTablePerso.push_back(blankPerso);
-        m_ciblesAttaque.push_back(blankPerso);
-    }
-
-     if (m_turnAttaques.count() < m_attaquants.count())
-     {
-         QVector <int> blankEffect;
-         blankEffect.push_back(0);
-         blankEffect.push_back(0);
-         blankEffect.push_back(0);
-         blankEffect.push_back(0);
-
-         QVector <double> blankEffectDouble;
-         blankEffectDouble.push_back(0);
-         blankEffectDouble.push_back(0);
-         blankEffectDouble.push_back(0);
-         blankEffectDouble.push_back(0);
-         m_turnAttaques.push_back(traite->getAttaques()[0]);
-     }
      this->updateGUI();
 }
 
@@ -219,7 +197,6 @@ void Combat::on_eraseAttaqueButton_clicked()
 
     m_turnAttaques.erase(m_turnAttaques.begin() + attaqueSelected);
     m_ciblesAttaque.erase(m_ciblesAttaque.begin() + attaqueSelected);
-    m_attaquants.erase(m_attaquants.begin() + attaqueSelected);
     this->updateGUI();
 }
 
@@ -251,7 +228,7 @@ void Combat::on_ennemyTable_doubleClicked(const QModelIndex &index)
         blankEffectDouble.push_back(0);
         blankEffectDouble.push_back(0);
         QVector <Attaque *> selectedAttaque = m_mechants[ui->ennemyTable->currentRow()]->getAttaques();
-        selectedAttaque.push_back(new Attaque (0,"Passer son tour",0,0,1,0,0,0,0,0,0,0,0,blankEffect,blankEffect,blankEffect,9999,0,"Passer son tour"));
+        selectedAttaque.push_back(new Attaque (m_mechants[ui->ennemyTable->currentRow()],0,"Passer son tour",0,0,1,0,0,0,0,0,0,0,0,blankEffect,blankEffect,blankEffect,9999,0,"Passer son tour"));
         m_mechants[ui->ennemyTable->currentRow()]->setAttaque(selectedAttaque);
 
     }
@@ -273,15 +250,14 @@ void Combat::beforeRemovingEnnemy(Personnage *toRemove)
 {
     //test si cet ennemi existe dans la liste des attaquants :
     int loop = 0;
-    while(loop != m_attaquants.count())
+    while(loop != m_turnAttaques.count())
     {
-        if (*m_attaquants[loop] == *toRemove)
+        if (*m_turnAttaques[loop]->m_parent == *toRemove)
         {
             ui->attaquesTableWidget->removeRow(loop);
 
             m_turnAttaques.erase(m_turnAttaques.begin() + loop);
             m_ciblesAttaque.erase(m_ciblesAttaque.begin() + loop);
-            m_attaquants.erase(m_attaquants.begin() + loop);
         }
         loop++;
     }
@@ -306,7 +282,7 @@ void Combat::beforeRemovingEnnemy(Personnage *toRemove)
 
 void Combat::on_editButton_clicked()
 {
-    EnnemiesSet ennemySet (*m_mechants[ui->ennemyTable->currentRow()],m_ennemiesColor[ui->ennemyTable->currentRow()],m_presets);
+    EnnemiesSet ennemySet (*m_mechants[ui->ennemyTable->currentRow()],m_ennemiesColor[ui->ennemyTable->currentRow()],EnnemiesSet::PlainSelection,m_presets,m_presetsColor);
     ennemySet.exec();
     this->updateGUI();
     this->updateEnnemisList();
@@ -316,7 +292,7 @@ void Combat::on_editButton_clicked()
 
 void Combat::on_pushButton_clicked()//fin de tour
 {
-    Briefing *endTurn = new Briefing (m_attaquants,m_ciblesAttaque,m_turnAttaques);
+    Briefing *endTurn = new Briefing (m_ciblesAttaque,m_turnAttaques);
     endTurn->exec();
     //fins de tour
     ui->endTurnTextEdit->setVisible(true);
@@ -365,7 +341,6 @@ void Combat::on_pushButton_clicked()//fin de tour
         {
             m_turnAttaques.erase(m_turnAttaques.begin() + loop);
             m_ciblesAttaque.erase(m_ciblesAttaque.begin() + loop);
-            m_attaquants.erase(m_attaquants.begin() + loop);
             loop--;
         }
         loop++;
@@ -454,4 +429,13 @@ void Combat::splash(QVector<QString> toDisplay)
         ui->endTurnTextEdit->insertHtml(toDisplay[loop] + "<br />");
         loop++;
     }
+}
+
+void Combat::on_PresetsButton_clicked()
+{
+    m_presets->push_back(Personnage());
+    m_presetsColor->push_back(QColor());
+    EnnemiesSet *presetSet =new EnnemiesSet(m_presets->operator [](m_presets->count() - 1),m_presetsColor->operator [](m_presetsColor->count() - 1),EnnemiesSet::PresetSelection);
+    presetSet->exec();
+
 }

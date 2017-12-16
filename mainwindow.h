@@ -24,7 +24,7 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
     void setWidgetUi(int idPerso, int widget, QString newValue);
-    void saveMain(QString path);
+    void saveMain();
     void updateGui();
     
 
@@ -42,6 +42,8 @@ private :
     Heros m_healer;
     Heros m_shaman;
     Heros m_archer;
+    QVector <Personnage> m_presets;
+    QVector <QColor> m_presetsColor;
 
 
     //Path principal (au besoin, je cherche pourquoi les path relatifs ne marchent pas

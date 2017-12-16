@@ -287,9 +287,9 @@
     </property>
    </widget>
   </widget>
-  <widget class="QListWidget" name="listWidget">
+  <widget class="QListWidget" name="presetsListWidget">
    <property name="enabled">
-    <bool>false</bool>
+    <bool>true</bool>
    </property>
    <property name="geometry">
     <rect>
@@ -298,27 +298,6 @@
      <width>241</width>
      <height>192</height>
     </rect>
-   </property>
-   <item>
-    <property name="text">
-     <string>Incomming...</string>
-    </property>
-   </item>
-  </widget>
-  <widget class="QCheckBox" name="checkBox">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>340</y>
-     <width>70</width>
-     <height>17</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Predefs : </string>
    </property>
   </widget>
   <widget class="QGroupBox" name="groupBox_2">
