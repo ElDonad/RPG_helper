@@ -2,19 +2,20 @@
 #define CHECKBOXATTAQUEFORMITEM_H
 
 #include <attaqueformitem.h>
+//#include <attaqueform.h>
 
-
+class AttaqueForm;
 class CheckBoxAttaqueFormItem : public AttaqueFormItem
 {
 public:
-    CheckBoxAttaqueFormItem(QString label, bool defaultValue = false);
-    bool returnValue();
-    virtual QWidget* getWidget(QGridLayout layout, int value);
+    CheckBoxAttaqueFormItem(AttaqueForm *cible, QString label,bool*toReturn, bool defaultValue = 0);
+    virtual void registerFormItem();
+    virtual void returnValues(bool value);
 
 private:
+    bool m_defaultValue;
+    bool *m_toReturn;
     QString m_label;
-    bool m_value;
-
 };
 
 #endif // CHECKBOXATTAQUEFORMITEM_H

@@ -11,6 +11,9 @@
 #include <QFileDialog>
 #include <statsmodifier.h>
 
+//attaques spéciales :
+#include <attaquefeuglace.h>
+
 namespace Ui {
 class MainWindow;
 }

@@ -101,6 +101,7 @@ void setAttaque::on_attaquesTableWidget_cellActivated(int row, int column)
     m_currentAttaqueTableCellRow = row;
     QVector <Attaque*> attaquesTableau = m_attaquant->getAttaques();
     Attaque *selected = attaquesTableau[row];
+    selected->onSelected();
     ui->nameAttaque->setText(selected->getName() + " :");
     ui->degatsDesc->setText(QString::number(selected->getDegats()));
     ui->chargeDesc->setText(QString::number(selected->getCharge()));

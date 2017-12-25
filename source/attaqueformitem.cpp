@@ -1,6 +1,13 @@
 #include "attaqueformitem.h"
 
-QString AttaqueFormItem::getLabel()
+
+
+AttaqueFormItem::itemType AttaqueFormItem::getType()
 {
-    return m_label;
+    return m_itemType;
+}
+
+void AttaqueFormItem::resetCible(AttaqueForm *cible)
+{
+    m_cible = cible;
 }

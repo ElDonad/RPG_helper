@@ -34,12 +34,28 @@ AttaqueFeuGlace::AttaqueFeuGlace(
                                                                            dodgeHitModifier,
                                                                            critHitModifier,
                                                                            critAttaqueModifier,
-                                                                            effectsModifier,
-                                                                            effectsLuck,
-                                                                            permanentEffectsModifier,
+                                                                           effectsModifier,
+                                                                           effectsLuck,
+                                                                           permanentEffectsModifier,
                                                                            attaqueId,
                                                                            level,
-                                                                           description)
+                                                                           description),m_fire(m_form,"Feu (1 tr)",&m_fireSelected,false),
+                                                                           m_glace(m_form,"Glace (3 trs)",&m_glaceSelected,false)
 {
 
+    QVector<AttaqueFormItem*>items;
+    items.push_back(&m_fire);
+    items.push_back(&m_glace);
+    QString buffer = "Attaque Feu/glace";
+    m_form = new AttaqueForm(items,buffer);
+    m_fire.resetCible(m_form);
+    m_glace.resetCible(m_form);
+    m_fire.registerFormItem();
+    m_glace.registerFormItem();
+
+}
+
+void AttaqueFeuGlace::onSelected()
+{
+    m_form->execute();
 }
