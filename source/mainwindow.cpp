@@ -4,6 +4,7 @@
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
+
     ui(new Ui::MainWindow),
     m_bourrin(),
     m_mage(),
@@ -65,8 +66,10 @@ MainWindow::MainWindow(QWidget *parent) :
 //        bourrinAttaques.push_back(new Attaque(110,"Pirouette 2",0,0,1,0,0,0,0,0,0,0,0,blankEffects,blankEffects,blankEffects,113,8));
 //        bourrinAttaques.push_back(new Attaque(0,"Shield 2",0,0,1,0,0,0,0,0,0,0,0,blankEffects,blankEffects,blankEffects,114,9));//4* les PV du bourrin
 //        bourrinAttaques.push_back(new Attaque(130,"Bourrin 3",0,0,2,0,0,0,0,0,0,0,0,blankEffects,blankEffects,blankEffects,115,10));//30% stun
+        bourrinAttaques.push_back(new AttaqueFeuGlace(&m_bourrin,0,"Attaque Feu/Glace",0,30,3,0,1.1,0,0,0,0,0,0,blankEffects,blankEffects,blankEffects,180,1,""));
+//        archerAttaques.push_back(new Attaque(0,"Feu/glace",0,30,3,0,1.1,0,0,0,0,0,blankEffects,blankEffects,blankEffects,404,1));//feu : 3t, glace : 1t (choix)
         
-//        m_bourrin.rewrite(1000,1000,0,0,"Bourrin",1,(0.4),(1.5),0,45,(-45),bourrinAttaques);
+        m_bourrin.rewrite(1000,1000,0,0,"Bourrin",1,(0.4),(1.5),0,45,(-45),bourrinAttaques);
 
 //        //assassin
 //        QVector <Attaque*> assassinAttaques;
@@ -229,21 +232,21 @@ MainWindow::MainWindow(QWidget *parent) :
         //int nbFichiersSD = Directory.GetFiles(path, "*.*", SearchOption.TopDirectory).Length - 1; : pour avoir le nombre de fichiers
 
         //1. on set les personnages
-//        QVector <int> blankEffects;
-//        blankEffects.push_back(0);
-//        blankEffects.push_back(0);
-//        blankEffects.push_back(0);
-//        blankEffects.push_back(0);
+        QVector <int> blankEffects;
+        blankEffects.push_back(0);
+        blankEffects.push_back(0);
+        blankEffects.push_back(0);
+        blankEffects.push_back(0);
 
 
-//        QVector <Attaque*> bourrinAttaques;
-//        QString bourrinName("Bourrin");
-//        bourrinAttaques.push_back(new Attaque(75,bourrinName,0,0,1,0,0,0,0,0,0,0,0,blankEffects,blankEffects,blankEffects, 101,1));//SPECIAL : désactive l'état défense du bourrin pendant le reste du tour
-//        bourrinAttaques.push_back(new Attaque(50,"Smash",0,0,1,0,0,0,0,0,0,0,0,blankEffects,blankEffects,blankEffects,102,1));
+        QVector <Attaque*> bourrinAttaques;
+        QString bourrinName("Bourrin");
+//        bourrinAttaques.push_back(new Attaque(*m_bourrin,75,bourrinName,0,0,1,0,0,0,0,0,0,0,0,blankEffects,blankEffects,blankEffects, 101,1));//SPECIAL : désactive l'état défense du bourrin pendant le reste du tour
+        bourrinAttaques.push_back(new Attaque(&m_bourrin,50,"Smash",0,0,1,0,0,0,0,0,0,0,0,blankEffects,blankEffects,blankEffects,102,1));
 //        bourrinAttaques.push_back(new Attaque(60,"Bonk",0,0,1,0,0,0,0,0,0,0,0,blankEffects,blankEffects,blankEffects,103,1));//10% chance de faire du stun
 //        bourrinAttaques.push_back(new Attaque(0,"Heal",0.1,0,1,0,0,0,0,0,0,0,0,blankEffects,blankEffects,blankEffects,104,1));// !! vérifier heal en pourcentages
 //        bourrinAttaques.push_back(new Attaque(0,"Proteccio",0,0,1,0,0,0,0,0.4,0,0,0,blankEffects,blankEffects,blankEffects,105,1));//voir suites.txt
-//        bourrinAttaques.push_back(new Attaque(70,"Pirouette",0,0,1,0,0,0,0,0,0,0,0,blankEffects,blankEffects,blankEffects,106,2));
+        bourrinAttaques.push_back(new Attaque(&m_bourrin,70,"Pirouette",0,0,1,0,0,0,0,0,0,0,0,blankEffects,blankEffects,blankEffects,106,2));
 //        bourrinAttaques.push_back(new Attaque(30,"Tremblement De Terre",0,0,1,0,0,0,0,0,0,0,0,blankEffects,blankEffects,blankEffects,107,3));
 //        bourrinAttaques.push_back(new Attaque(0, "Shield",0,0,1,0,0,0,0,0,0,0,0,blankEffects,blankEffects,blankEffects,108,4));
 //        bourrinAttaques.push_back(new Attaque(100,"Bourrin 2",0,0,1,0,0,0,0,0,0,0,0,blankEffects,blankEffects,blankEffects,109,5));//10% chance de stun
@@ -253,8 +256,10 @@ MainWindow::MainWindow(QWidget *parent) :
 //        bourrinAttaques.push_back(new Attaque(110,"Pirouette 2",0,0,1,0,0,0,0,0,0,0,0,blankEffects,blankEffects,blankEffects,113,8));
 //        bourrinAttaques.push_back(new Attaque(0,"Shield 2",0,0,1,0,0,0,0,0,0,0,0,blankEffects,blankEffects,blankEffects,114,9));//4* les PV du bourrin
 //        bourrinAttaques.push_back(new Attaque(130,"Bourrin 3",0,0,2,0,0,0,0,0,0,0,0,blankEffects,blankEffects,blankEffects,115,10));//30% stun
+        bourrinAttaques.push_back(new AttaqueFeuGlace(&m_bourrin,0,"Attaque Feu/Glace",0,30,3,0,1.1,0,0,0,0,0,0,blankEffects,blankEffects,blankEffects,180,1,""));
+//        archerAttaques.push_back(new Attaque(0,"Feu/glace",0,30,3,0,1.1,0,0,0,0,0,blankEffects,blankEffects,blankEffects,404,1));//feu : 3t, glace : 1t (choix)
 
-//        m_bourrin.rewrite(getFile(m_mainPath + "/bourrin.txt"), bourrinAttaques);
+        m_bourrin.rewrite(1000,1000,0,0,"Bourrin",1,(0.4),(1.5),0,45,(-45),bourrinAttaques);
 
 //        QVector <Attaque*> assassinAttaques;
 

@@ -7,6 +7,7 @@
 #include <personnage.h>
 #include <QVector>
 #include <QDebug>
+#include <attaquefeuglace.h>
 
 namespace Ui {
 class setAttaque;

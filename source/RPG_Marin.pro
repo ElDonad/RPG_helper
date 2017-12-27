@@ -37,7 +37,16 @@ SOURCES += main.cpp\
     ennemiesset.cpp \
     operatorequal.cpp \
     briefing.cpp \
-    infospersos.cpp
+    infospersos.cpp \
+    attaquefeuglace.cpp \
+    attaqueform.cpp \
+    attaqueformitem.cpp \
+    checkboxattaqueformitem.cpp \
+    doublespinboxattaqueformitem.cpp \
+    intspinboxattaqueformitem.cpp \
+    labelattaqueformitem.cpp \
+    lineeditattaqueformitem.cpp \
+    radioboxattaqueformitem.cpp
 
 HEADERS  += mainwindow.h \
     personnage.h \
@@ -52,7 +61,16 @@ HEADERS  += mainwindow.h \
     ennemiesset.h \
     operatorequal.h \
     briefing.h \
-    infospersos.h
+    infospersos.h \
+    attaquefeuglace.h \
+    attaqueform.h \
+    attaqueformitem.h \
+    checkboxattaqueformitem.h \
+    doublespinboxattaqueformitem.h \
+    intspinboxattaqueformitem.h \
+    labelattaqueformitem.h \
+    lineeditattaqueformitem.h \
+    radioboxattaqueformitem.h
 
 FORMS    += mainwindow.ui \
     combat.ui \
@@ -61,7 +79,7 @@ FORMS    += mainwindow.ui \
     slacsheffectattaquedial.ui \
     ennemiesset.ui \
     briefing.ui \
-    infospersos.ui
+    infospersos.ui \
 
 DISTFILES += \
     tableau_noms

@@ -1,22 +1,23 @@
 #ifndef ATTAQUEFORMITEM_H
 #define ATTAQUEFORMITEM_H
 
+//#include <attaqueform.h>
 #include <QString>
 
-#include <QWidget>
-#include <QGridLayout>
-
-
+class AttaqueForm;
 class AttaqueFormItem
 {
 public:
-    QString getLabel();
-    virtual QWidget* getWidget(QGridLayout layout, int value)=0;
+    enum itemType {CheckBoxItem, IntSpinBoxItem, DoubleSpinBoxItem, RadioBoxItem, Label, LineEdit};
+    virtual void registerFormItem()=0;
+    //virtual void returnValues()=0;
+    virtual itemType getType();
+    virtual void resetCible(AttaqueForm* cible);
 
 
-private:
-    QString m_label;
-
+protected:
+    itemType m_itemType;
+    AttaqueForm *m_cible;
 };
 
 #endif // ATTAQUEFORMITEM_H

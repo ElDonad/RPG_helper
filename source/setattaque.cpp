@@ -20,17 +20,17 @@ setAttaque::setAttaque(Personnage *attaquant, QVector<Personnage *> &ennemis, QV
 
     //set le tableau des attaques
     int loopAttaques = 0;
-    while (m_attaquant->getAttaques().count() != loopAttaques)
+    while (m_attaquant->getAttaques().count()!= loopAttaques)
     {
-//        qDebug()<<"getAttaques.count : "<<m_attaquant->getAttaques().count();
-//        qDebug()<<"nombre cellules : "<< ui->attaquesTableWidget->rowCount() - 1;
+        qDebug()<<"getAttaques.count : "<<m_attaquant->getAttaques().count();
+        qDebug()<<"nombre cellules : "<< ui->attaquesTableWidget->rowCount() - 1;
 //        qDebug()<<"Nom première attaque : "<<m_attaquant->getAttaques()[0]->getName();
-        if (m_attaquant->getAttaques().count() > ui->attaquesTableWidget->rowCount())
+        if (m_attaquant->getAttaques().count() >= ui->attaquesTableWidget->rowCount())
         {
             QVector <Attaque*> attaqueBuffer2 = m_attaquant->getAttaques();
 
-            qDebug()<<QString::number(ui->attaquesTableWidget->rowCount());
-            Attaque *bufferAttaque = attaqueBuffer2[ui->attaquesTableWidget->rowCount()];
+            qDebug()<<QString::number(loopAttaques);
+            Attaque *bufferAttaque = attaqueBuffer2[loopAttaques];
             qDebug()<<bufferAttaque->getName();
 
             if (bufferAttaque->getLevel() <= m_attaquant->getLevel())
@@ -100,7 +100,20 @@ void setAttaque::on_attaquesTableWidget_cellActivated(int row, int column)
 {
     m_currentAttaqueTableCellRow = row;
     QVector <Attaque*> attaquesTableau = m_attaquant->getAttaques();
-    Attaque *selected = attaquesTableau[row];
+//    Attaque *selected = attaquesTableau[row];
+    int selectedAttaque = 0;
+    int loop = 0;
+    while (selectedAttaque - 1 != row)
+    {
+        if (attaquesTableau[loop]->getLevel() <= m_attaquant->getLevel())
+        {
+            selectedAttaque++;
+        }
+        loop++;
+    }
+    Attaque *selected = attaquesTableau[loop - 1];
+    qDebug()<<"Attaque sélectionnée : "<<selected->getName();
+    selected->onSelected();
     ui->nameAttaque->setText(selected->getName() + " :");
     ui->degatsDesc->setText(QString::number(selected->getDegats()));
     ui->chargeDesc->setText(QString::number(selected->getCharge()));

@@ -922,7 +922,7 @@ QVector <QString> Personnage::newTurn()
         {
             if (m_fireTimerBuffer <= 0)
             {
-                m_fireTimerBuffer == m_level;
+                m_fireTimerBuffer = m_level;
             }
             m_vie = m_vie - m_fireTimerBuffer;
             messages.push_back("<span style:\"color=Orange\">" + this->m_nom + " a subi " + QString::number(m_fireTimerBuffer) + " dégâts de feu</span>");
