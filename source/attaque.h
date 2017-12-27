@@ -42,7 +42,7 @@ public:
     //
     //Les subdivisions de la classe attaque :
     //- basicAttaque s'occupe de faire du dégât et de retirer les points de mana
-private :
+protected :
     virtual QVector <QString> basicAttaque(Personnage *cible);
     virtual QVector <QString> healAttaque(Personnage *cible);
     virtual QVector <QString> effects(Personnage *cible);

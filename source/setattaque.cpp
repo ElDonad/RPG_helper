@@ -100,7 +100,19 @@ void setAttaque::on_attaquesTableWidget_cellActivated(int row, int column)
 {
     m_currentAttaqueTableCellRow = row;
     QVector <Attaque*> attaquesTableau = m_attaquant->getAttaques();
-    Attaque *selected = attaquesTableau[row];
+//    Attaque *selected = attaquesTableau[row];
+    int selectedAttaque = 0;
+    int loop = 0;
+    while (selectedAttaque - 1 != row)
+    {
+        if (attaquesTableau[loop]->getLevel() <= m_attaquant->getLevel())
+        {
+            selectedAttaque++;
+        }
+        loop++;
+    }
+    Attaque *selected = attaquesTableau[loop - 1];
+    qDebug()<<"Attaque sélectionnée : "<<selected->getName();
     selected->onSelected();
     ui->nameAttaque->setText(selected->getName() + " :");
     ui->degatsDesc->setText(QString::number(selected->getDegats()));

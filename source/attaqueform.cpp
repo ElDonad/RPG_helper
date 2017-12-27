@@ -106,7 +106,9 @@ void AttaqueForm::processUi()
         }
         case AttaqueFormItem::LineEdit:
         {
-
+            LineEditAttaqueFormItem *process = dynamic_cast <LineEditAttaqueFormItem*> (m_formItems[i]);
+            QLineEdit *finalWidget = dynamic_cast <QLineEdit*> (m_widgets[i]);
+            process->returnValues(finalWidget->text());
         }
         default:
             break;
@@ -120,14 +122,15 @@ void AttaqueForm::execute()
     m_pushButton = button;
     m_mainLayout->addWidget(button, m_itemNumber,1,1,2);
     m_form.setLayout(m_mainLayout);
-    connect(m_pushButton,SIGNAL(clicked(bool)),this,SLOT(onOkPressed()));
+    connect(m_pushButton,SIGNAL(pressed()),this,SLOT(onOkPressed()));
     m_form.exec();
 }
 
 void AttaqueForm::onOkPressed()
 {
+    qDebug()<<"onOkPressed";
     processUi();
-    this->close();
+    m_form.close();
 }
 
 

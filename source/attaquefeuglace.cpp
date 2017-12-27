@@ -58,4 +58,10 @@ AttaqueFeuGlace::AttaqueFeuGlace(
 void AttaqueFeuGlace::onSelected()
 {
     m_form->execute();
+    QString text;
+    if (m_glaceSelected = true)
+        text = "Glace";
+    if (m_fireSelected = true)
+        text = "Fire";
+    this->m_description = this->m_description + "\n" + text + " sélectionné.";
 }

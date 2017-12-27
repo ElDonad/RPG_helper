@@ -14,6 +14,7 @@
 #include <QVector>
 #include <QString>
 #include <QBoxLayout>
+#include <QDebug>
 
 #include <QGroupBox>
 #include <QLabel>
