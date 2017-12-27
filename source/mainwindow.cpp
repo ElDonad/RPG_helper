@@ -4,6 +4,7 @@
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
+
     ui(new Ui::MainWindow),
     m_bourrin(),
     m_mage(),

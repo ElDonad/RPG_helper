@@ -3,12 +3,13 @@
 AttaqueForm::AttaqueForm(QVector<AttaqueFormItem*> formItems, QString name,QWidget *parent): m_form()
 {
 
+    m_mainLayout = new QGridLayout();
     m_form.setWindowTitle(name);
     m_formItems = formItems;
     m_itemNumber = 0;
 
     //processUi();
-    m_form.setLayout(m_mainLayout);
+
 }
 
 void AttaqueForm::addCheckBoxItem(QString label, CheckBoxAttaqueFormItem* retour, bool defaultValue)
@@ -17,7 +18,7 @@ void AttaqueForm::addCheckBoxItem(QString label, CheckBoxAttaqueFormItem* retour
     checkBox->setChecked(defaultValue);
     m_formItems.push_back(retour);
     m_widgets.push_back(checkBox);
-    m_mainLayout->addWidget(m_widgets.last(),m_itemNumber,1,1,2);
+    m_mainLayout->addWidget(m_widgets[m_itemNumber],m_itemNumber,1,1,2);
     m_itemNumber++;
 
 
@@ -30,7 +31,7 @@ void AttaqueForm::addDoubleSpinBoxItem(QString label, DoubleSpinBoxAttaqueFormIt
     QLabel *qlabel = new QLabel(label);
     m_widgets.push_back(doubleSpinBox);
     m_formItems.push_back(retour);
-    m_mainLayout->addWidget(m_widgets.last(),m_itemNumber,2);
+    m_mainLayout->addWidget(m_widgets[m_itemNumber],m_itemNumber,2);
     m_mainLayout->addWidget(qlabel,m_itemNumber,1);
     m_itemNumber++;
 }
@@ -42,7 +43,7 @@ void AttaqueForm::addIntSpinBoxItem(QString label, IntSpinBoxAttaqueFormItem *re
     QLabel *qlabel = new QLabel(label);
     m_widgets.push_back(intSpinBox);
     m_formItems.push_back(retour);
-    m_mainLayout->addWidget(m_widgets.last(),m_itemNumber,2);
+    m_mainLayout->addWidget(m_widgets[m_itemNumber],m_itemNumber,2);
     m_mainLayout->addWidget(qlabel,m_itemNumber,1);
     m_itemNumber++;
 
@@ -62,8 +63,8 @@ void AttaqueForm::addLineEdit(QString label, LineEditAttaqueFormItem *retour, QS
     QLineEdit *lineEdit = new QLineEdit(defaultValue);
     m_widgets.push_back(lineEdit);
     m_formItems.push_back(retour);
-    m_mainLayout->addWidget(m_widgets.last(),m_itemNumber,1);
-    m_mainLayout->addWidget(qlabel,m_itemNumber,2);
+    m_mainLayout->addWidget(m_widgets[m_itemNumber],m_itemNumber,1);
+    m_mainLayout->addWidget(qlabel,m_itemNumber + 1,2);
     m_itemNumber++;
 }
 
@@ -118,6 +119,7 @@ void AttaqueForm::execute()
     QPushButton *button = new QPushButton("Valider");
     m_pushButton = button;
     m_mainLayout->addWidget(button, m_itemNumber,1,1,2);
+    m_form.setLayout(m_mainLayout);
     connect(m_pushButton,SIGNAL(clicked(bool)),this,SLOT(onOkPressed()));
     m_form.exec();
 }

@@ -20,17 +20,17 @@ setAttaque::setAttaque(Personnage *attaquant, QVector<Personnage *> &ennemis, QV
 
     //set le tableau des attaques
     int loopAttaques = 0;
-    while (m_attaquant->getAttaques().count() != loopAttaques)
+    while (m_attaquant->getAttaques().count()!= loopAttaques)
     {
-//        qDebug()<<"getAttaques.count : "<<m_attaquant->getAttaques().count();
-//        qDebug()<<"nombre cellules : "<< ui->attaquesTableWidget->rowCount() - 1;
+        qDebug()<<"getAttaques.count : "<<m_attaquant->getAttaques().count();
+        qDebug()<<"nombre cellules : "<< ui->attaquesTableWidget->rowCount() - 1;
 //        qDebug()<<"Nom première attaque : "<<m_attaquant->getAttaques()[0]->getName();
-        if (m_attaquant->getAttaques().count() > ui->attaquesTableWidget->rowCount())
+        if (m_attaquant->getAttaques().count() >= ui->attaquesTableWidget->rowCount())
         {
             QVector <Attaque*> attaqueBuffer2 = m_attaquant->getAttaques();
 
-            qDebug()<<QString::number(ui->attaquesTableWidget->rowCount());
-            Attaque *bufferAttaque = attaqueBuffer2[ui->attaquesTableWidget->rowCount()];
+            qDebug()<<QString::number(loopAttaques);
+            Attaque *bufferAttaque = attaqueBuffer2[loopAttaques];
             qDebug()<<bufferAttaque->getName();
 
             if (bufferAttaque->getLevel() <= m_attaquant->getLevel())
